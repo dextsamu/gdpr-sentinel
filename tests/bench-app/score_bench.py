@@ -35,6 +35,8 @@ def prepare(dest):
     if app.exists():
         sys.exit(f"esiste già: {app}")
     shutil.copytree(HERE / "template", app)
+    for b in app.rglob("*.bench"):   # manifest salvati come *.bench nel repository (dipendenze vulnerabili apposta)
+        b.rename(b.with_suffix(""))
     g = lambda *a: subprocess.run(["git", "-C", str(app), "-c", "user.email=dev@example.test", "-c", "user.name=dev", *a],
                                   capture_output=True, text=True, check=True)
     g("init", "-q"); g("add", "-A"); g("commit", "-qm", "versione 1.4.0")
