@@ -400,5 +400,12 @@ if have("refutation_pack.py") and have("gap_briefs.py"):
     check("pacchetto di smentita (gdpr): brief del gap con smentita «non eseguita», esiti applicati a gaps.csv e alla matrice",
           (pkg / "smentita-GDPR-001.md").exists() and "resiste | sessione nuova" in gx and "resiste | sessione nuova" in mx, ri.stdout + ri.stderr)
 
+if have("gdpr_prepass.py") and have("check_delivery.py") and SBP.exists():
+    pcs = (pw / "punti-pericolosi.csv").read_text(encoding="utf-8")
+    check("prepass GDPR: punti-pericolosi.csv con una riga per categoria di indizi (tracker, dati particolari, log, fornitori…)",
+          all(c in pcs for c in ("tracker e risorse di terzi,", "dati particolari,", "log con dati personali,", "fornitori,")), pcs)
+    rc_ = run("check_delivery.py", pw)
+    check("chiudi (gdpr): categorie di indizi non chiuse fanno fallire", "FAIL punti pericolosi" in rc_.stdout, rc_.stdout[-500:])
+
 print(f"\nriusciti: {ok}  falliti: {fail}")
 sys.exit(1 if fail else 0)

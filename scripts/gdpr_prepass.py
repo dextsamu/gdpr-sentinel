@@ -23,6 +23,7 @@ Un controllo che ha solo l'evidenza «[prepass]» e nient'altro è considerato n
 import argparse
 import csv
 import json
+import re
 import subprocess
 import sys
 import time
@@ -82,6 +83,30 @@ def main():
         "M": f"marketing e consensi: {len(g('marketing'))} indizi ({top_files(g('marketing'))})",
         "N": f"geolocalizzazione: {len(g('geolocalizzazione'))} indizi ({top_files(g('geolocalizzazione'))})",
     }
+    # Una riga da chiudere per categoria di indizi (come punti-pericolosi.csv di appsec-sentinel): due giri sullo stesso
+    # gestionale vedevano in metà dei casi cause diverse perché uno dei due non apriva un'intera categoria (log, GPS,
+    # video incorporati, dati sanitari). Chiudere ogni categoria con un gap o un «non difetto» motivato le fa aprire a tutti.
+    import punti
+    CATS = [("tracker e risorse di terzi", "tracker"), ("cookie e archiviazione nel browser", "cookie"), ("dati particolari", "particolari"),
+            ("minori e date di nascita", "minori"), ("geolocalizzazione", "geolocalizzazione"), ("log con dati personali", "log"),
+            ("diritti: cancellazione ed esportazione", "diritti"), ("marketing e consensi", "marketing")]
+    out_lines, cats = [], []
+    for nome, k in CATS:
+        per, righe = {}, []
+        for x in g(k):
+            per[x["file"]] = per.get(x["file"], 0) + 1
+            if per[x["file"]] <= 2:
+                righe.append(f"{x['file']}:{x.get('riga', '')}".rstrip(":"))
+        if righe:
+            out_lines += [f"## {nome}: {len(righe)}" + (" (primi 40)" if len(righe) > 40 else "")] + righe[:40]
+            cats.append((nome, len(righe)))
+    fr = [x.strip() for r in forn for x in re.split(r"[;,]\s*", r.get("evidenza_nel_codice", "")) if ":" in x and not x.startswith("package.json")]
+    if forn:
+        out_lines += [f"## fornitori: {len(forn)}"] + (fr[:40] or ["package.json"])
+        cats.append(("fornitori", len(forn)))
+    (reg / "punti-pericolosi.txt").write_text("\n".join(out_lines) + "\n", encoding="utf-8")
+    punti.write(audit, cats)
+
     mrows = list(csv.DictReader(gm.open(encoding="utf-8")))
     fields = list(mrows[0].keys()) if mrows else []
     filled = []
