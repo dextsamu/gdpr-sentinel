@@ -12,6 +12,8 @@ Cosa è fatto, cosa viene dopo e perché. Le priorità vengono dalle misure (ban
 - `doppio` con unione per causa e smentita dei gap ad alta priorità (`apply_refutations.py`);
 - `domande_minime` per ogni controllo e regola «un gap = una causa»: accordo fra due giri su un gestionale reale dal 44–46% al 63%.
 
+**1.2.1 (01/11/2026)**: script condivisi allineati ad appsec-sentinel (controllo di consegna); nessun cambiamento nel metodo privacy.
+
 ## Prossimo
 
 1. **Smentita dei gap con brief dedicati.** Oggi il verificatore riceve le righe di `gaps.csv`; serve un brief per gap (affermazione, riferimenti, ipotesi di smentita tipiche della privacy: obbligo di legge, dato non personale, trattamento di un altro titolare). Obiettivo: stessa pulizia vista in appsec (falsi respinti, nessun vero respinto) su un banco con gap falsi aggiunti apposta.
