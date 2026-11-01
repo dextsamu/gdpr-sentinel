@@ -5,6 +5,9 @@ Un gap scritto da chi l'ha trovato sembra solido a chi l'ha scritto. Prima del r
 ## Chi può farlo
 Un secondo agente con lo stesso perimetro e gli stessi divieti, una sessione nuova (altra conversazione o altro agente) che riparte dal solo gap, o una persona; un secondo passaggio nella stessa conversazione non conta. Nessuno amplia il mandato. Se manca un verificatore indipendente, scrivi `non eseguita` e dichiaralo nel report.
 
+## Cosa riceve il verificatore
+Un brief per gap, scritto da `scripts/gap_briefs.py <cartella> --repo <repository>` in `smentite/smentita-<ID>.md`: l'affermazione, le righe di codice citate e le ipotesi di smentita pertinenti all'area. Non riceve la motivazione dell'autore, la matrice né le domande per il DPO. Sul banco privacy, con 4 gap falsi aggiunti apposta tra 9, il verificatore ne ha respinti 3 e declassato il quarto, senza respingere nessun gap vero.
+
 ## Cosa provare a smentire
 1. Il trattamento esiste davvero in produzione, o è codice di prova, esempio, funzione disattivata?
 2. Un'altra base giuridica, un accordo o un'informativa già lo coprono e il codice letto non lo mostra?

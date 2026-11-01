@@ -14,13 +14,14 @@ Cosa è fatto, cosa viene dopo e perché. Le priorità vengono dalle misure (ban
 
 **1.2.1 (01/11/2026)**: script condivisi allineati ad appsec-sentinel (controllo di consegna); nessun cambiamento nel metodo privacy.
 
+**1.2.2 (01/11/2026)**: brief per la smentita dei gap (`gap_briefs.py`). Sul banco privacy con 4 gap falsi su 9: 3 respinti e 1 declassato, nessun vero respinto.
+
 ## Prossimo
 
-1. **Smentita dei gap con brief dedicati.** Oggi il verificatore riceve le righe di `gaps.csv`; serve un brief per gap (affermazione, riferimenti, ipotesi di smentita tipiche della privacy: obbligo di legge, dato non personale, trattamento di un altro titolare). Obiettivo: stessa pulizia vista in appsec (falsi respinti, nessun vero respinto) su un banco con gap falsi aggiunti apposta.
-2. **Accordo oltre il 70%** sui repository grandi: raggruppamento suggerito delle cause vicine prima dell'unione e controllo che ogni controllo A–N abbia risposto alle sue `domande_minime`.
-3. **Secondo banco privacy** diverso dal primo (sito di un ente pubblico o di una scuola: modulistica, albo, minori, trasparenza). Misura la generalizzazione, che un banco solo non può misurare.
-4. **Giro misurato su Codex e Antigravity**: uno `statica` sul banco privacy con ciascun agente, con punteggio, per poter scrivere nel README che le skill funzionano su quegli agenti e non solo che sono state provate.
-5. **Rilascio successivo** insieme ad appsec-sentinel.
+1. **Accordo oltre il 70%** sui repository grandi: raggruppamento suggerito delle cause vicine prima dell'unione e controllo che ogni controllo A–N abbia risposto alle sue `domande_minime`.
+2. **Secondo banco privacy** diverso dal primo (sito di un ente pubblico o di una scuola: modulistica, albo, minori, trasparenza). Misura la generalizzazione, che un banco solo non può misurare.
+3. **Giro misurato su Codex e Antigravity**: uno `statica` sul banco privacy con ciascun agente, con punteggio, per poter scrivere nel README che le skill funzionano su quegli agenti e non solo che sono state provate.
+4. **Rilascio successivo** insieme ad appsec-sentinel.
 
 ## Dopo
 

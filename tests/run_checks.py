@@ -346,5 +346,21 @@ if have("apply_refutations.py"):
     r2 = run("check_matrix.py", ROOT / "assets" / "gdpr-matrix.csv", "--gaps", ga / "gaps.csv")
     check("smentita sui gap: gaps.csv aggiornato supera check_matrix --gaps", not [l for l in (r2.stdout + r2.stderr).splitlines() if "gap GDPR-00" in l and "smentita" in l], (r2.stdout + r2.stderr)[-400:])
 
+if have("gap_briefs.py"):
+    gb = tmp / "gb-audit"; gr = tmp / "gb-repo"
+    (gr / "src").mkdir(parents=True); gb.mkdir()
+    (gr / "src" / "export.ts").write_text("export async function GET() {\n  return json(await db.member.find())\n}\n", encoding="utf-8")
+    (gb / "gaps.csv").write_text("id,controllo,titolo,riferimenti,stato,priorita,rischio_interessati,norma,domanda_id,smentita\n"
+                                 "GDPR-001,F,Manca l'esportazione,src/export.ts:1-2,confermato da codice/config,alta,diritto negato,art. 20 GDPR,,\n"
+                                 "GDPR-002,G,Log senza retention,src/x.ts:1,ipotesi,alta,,,,\n"
+                                 "GDPR-003,E,Font Google,src/x.ts:1,riscontrato,media,,,,\n"
+                                 "GDPR-004,E,Analytics,src/x.ts:1,riscontrato,alta,,,,resiste | altro agente | x\n", encoding="utf-8")
+    run("gap_briefs.py", gb, "--repo", gr)
+    b1 = (gb / "smentite" / "smentita-GDPR-001.md")
+    files = sorted(x.name for x in (gb / "smentite").glob("*.md"))
+    check("gap_briefs: un brief solo per i gap alti riscontrati o confermati senza esito, con le righe citate e le ipotesi dell'area",
+          files == ["smentita-GDPR-001.md"] and "return json(await db.member.find())" in b1.read_text(encoding="utf-8")
+          and "un altro percorso" in b1.read_text(encoding="utf-8") and "motivazione" not in b1.read_text(encoding="utf-8").split("## Affermazione")[1], str(files))
+
 print(f"\nriusciti: {ok}  falliti: {fail}")
 sys.exit(1 if fail else 0)

@@ -4,6 +4,10 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/); v
 
 ## [Non rilasciato]
 
+## [1.2.2] - 2026-11-01
+### Aggiunto
+- **Brief per la smentita dei gap** (`scripts/gap_briefs.py <cartella> --repo <repository>`): un file per gap in `smentite/` con l'affermazione, le righe di codice citate e le ipotesi di smentita della privacy (il codice fa davvero ciò che il gap dice? dato non personale, altro titolare, obbligo di legge, informativa che già lo copre, job di cancellazione altrove, più quelle dell'area A–N); senza la motivazione dell'autore. Usato nel `doppio` e nella `smentita`. **Misurato** sul banco privacy con 9 gap ad alta priorità, 4 dei quali falsi aggiunti apposta (cookie di sessione senza consenso, tentativi di login mai cancellati, esportazione assente, coordinate della sede come dato personale): un sottoagente nuovo ha respinto 3 falsi e declassato il quarto (il codice fa il contrario del gap, ma il job non risulta avviato), nessun gap vero respinto, uno vero declassato a «ipotesi» con un motivo verificabile (Sentry non risulta caricato), e ha segnalato due difetti veri non presenti nell'elenco.
+
 ## [1.2.1] - 2026-11-01
 ### Cambiato
 - `check_delivery.py` e `checklist.py` allineati ad appsec-sentinel (controllo dei problemi annotati nella checklist e dei punti pericolosi per categoria; non si applicano alla matrice A–N).
