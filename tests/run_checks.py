@@ -407,5 +407,11 @@ if have("gdpr_prepass.py") and have("check_delivery.py") and SBP.exists():
     rc_ = run("check_delivery.py", pw)
     check("chiudi (gdpr): categorie di indizi non chiuse fanno fallire", "FAIL punti pericolosi" in rc_.stdout, rc_.stdout[-500:])
 
+if have("check_matrix.py"):
+    import importlib.util as _iu
+    _sp = _iu.spec_from_file_location("cm_", SC / "check_matrix.py"); _cm = _iu.module_from_spec(_sp); _sp.loader.exec_module(_cm)
+    check("giudizi: «conforme all'informativa» è un confronto fra testi, «il sito è conforme» resta vietato",
+          not _cm.GIUDIZI.search("trattamento conforme all'informativa") and _cm.GIUDIZI.search("il sito è conforme") is not None)
+
 print(f"\nriusciti: {ok}  falliti: {fail}")
 sys.exit(1 if fail else 0)

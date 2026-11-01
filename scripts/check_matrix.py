@@ -32,7 +32,9 @@ from pathlib import Path
 CONTROLLI = list("ABCDEFGHIJKLMN")
 ESITI_SMENTITA = ("resiste", "declassato", "respinto", "non eseguita")
 STATI = {"riscontrato", "confermato da codice/config", "ipotesi", "non verificabile"}
-GIUDIZI = re.compile(r"\b(non\s+conforme|non\s+conformit[aà]|conforme|compliant|non-compliant)\b", re.I)
+# «conforme all'informativa / a quanto dichiarato» confronta due testi, non è un giudizio di conformità (un verificatore
+# Antigravity l'aveva scritto descrivendo l'ipotesi che smentiva)
+GIUDIZI = re.compile(r"\b(non\s+conforme|non\s+conformit[aà]|conforme(?!\s+(?:a|al|alla|all'|alle|ai)\s*(?:informativ|quanto|dichiarat|codice|document))|compliant|non-compliant)\b", re.I)
 
 
 def read(path: Path):
