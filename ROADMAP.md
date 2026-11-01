@@ -20,7 +20,7 @@ Cosa è fatto, cosa viene dopo e perché. Le priorità vengono dalle misure (ban
 
 ## Prossimo
 
-1. **Accordo oltre il 70%** sui repository grandi: raggruppamento suggerito delle cause vicine prima dell'unione e controllo che ogni controllo A–N abbia risposto alle sue `domande_minime`.
+1. **Accordo oltre il 70%** sui repository grandi. Provato il 01/11/2026 con `punti-pericolosi.csv`: 59% (prima 63%), cioè nessun effetto misurabile; le differenze stanno nei temi documentali (governance, data breach, ruolo del DPO, segreti versionati). Prossimo tentativo: domande minime documentali numerate per i controlli D, K, L, chiuse una per una come le categorie, e abbinamento nell'unione dei gap con le stesse righe di codice citate anche se descritti in modo diverso.
 2. **Giro misurato su Codex e Antigravity**: uno `statica` sul banco privacy con ciascun agente, con punteggio, per poter scrivere nel README che le skill funzionano su quegli agenti e non solo che sono state provate.
 3. **Rilascio successivo** insieme ad appsec-sentinel.
 
