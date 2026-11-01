@@ -1,7 +1,7 @@
 {
   "name": "gdpr-sentinel",
   "description": "Valutazione tecnica GDPR/ePrivacy per agenti AI: informativa contro codice, gap con file e riga e domande per DPO e legale, senza mai dichiarare conformità. Italiano e inglese.",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "author": {
     "name": "Samuele Cucurnia e Pietro Previtali",
     "url": "https://github.com/dextsamu"

@@ -3,6 +3,8 @@
 Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/); versioni secondo [SemVer](https://semver.org/lang/it/).
 
 ## [Non rilasciato]
+
+## [1.2.3] - 2026-11-01
 ### Aggiunto
 - **Secondo banco privacy** `tests/bench-pa`: sito di un istituto comprensivo in PHP + MariaDB (minori, albo online, amministrazione trasparente, modulistica, servizi incorporati), 15 difetti e 5 esche. **Misurato**: due giri `statica` indipendenti, 15/15 difetti ciascuno (6/6 alti), 0 falsi allarmi sulle esche, accordo 15/15 sui difetti noti. Due regole delle esche sono state ristrette dopo il primo giro, perché contavano come falso allarme un gap corretto che citava la pagina degli eventi come confronto e un gap vero sul file di log.
 
