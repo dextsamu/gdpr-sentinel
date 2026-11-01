@@ -1,5 +1,5 @@
 {
- "_nota": "Verità del secondo banco privacy (sito di un istituto comprensivo, PHP). NON va data all'agente (prepare non la copia). Stesse regole del primo banco: un difetto è trovato se un gap cita uno dei file E il testo contiene una delle parole; un'esca è un falso allarme se un gap la cita affermando il problema sbagliato con priorità media o alta. Esche T02 e T04 ristrette dopo il primo giro: il punteggio contava come falso allarme un gap corretto che citava eventi.php come confronto («la pagina Eventi invece lo carica solo al clic») e un gap vero sul file di log dei contatti che citava il job di pulizia.",
+ "_nota": "Verità del secondo banco privacy (sito di un istituto comprensivo, PHP). NON va data all'agente (prepare non la copia). Stesse regole del primo banco: un difetto è trovato se un gap cita uno dei file E il testo contiene una delle parole; un'esca è un falso allarme se un gap la cita affermando il problema sbagliato con priorità media o alta. Esche T02 e T04 ristrette dopo il primo giro: il punteggio contava come falso allarme un gap corretto che citava eventi.php come confronto («la pagina Eventi invece lo carica solo al clic») e un gap vero sul file di log dei contatti che citava il job di pulizia. T02 ora richiede «evento/eventi» come parola intera: «preventiva» la attivava per errore (giro di Codex, 01/11/2026).",
  "difetti": [
   {
    "id": "S01",
@@ -171,7 +171,7 @@
    "file": [
     "public/eventi.php"
    ],
-   "parole": "event\\w*[^.]{0,100}(youtube|video)[^.]{0,100}(senza consenso|prima d\\w+ (scelta|consenso)|subito|automaticament|al caricamento)|(youtube|video)[^.]{0,100}event\\w*[^.]{0,100}(senza consenso|prima d\\w+ (scelta|consenso)|subito|automaticament)"
+   "parole": "\\bevent\\w*[^.]{0,100}(youtube|video)[^.]{0,100}(senza consenso|prima d\\w+ (scelta|consenso)|subito|automaticament|al caricamento)|(youtube|video)[^.]{0,100}\\bevent\\w*[^.]{0,100}(senza consenso|prima d\\w+ (scelta|consenso)|subito|automaticament)"
   },
   {
    "id": "T03",

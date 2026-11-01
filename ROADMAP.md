@@ -20,11 +20,12 @@ Cosa è fatto, cosa viene dopo e perché. Le priorità vengono dalle misure (ban
 
 **1.3.0 (01/11/2026)**: smentita senza sottoagenti (`refutation_pack.py`, provata sul secondo banco: 13 gap verificati da una sessione nuova), esiti riportati anche nella matrice, `punti-pericolosi.csv` per categorie di indizi (accordo su UnityKore 59%: nessun effetto misurabile), PDF con threat model e test dinamici.
 
+**Giro misurato su Antigravity e Codex (01/11/2026)**: `statica` sul secondo banco con lo stesso prompt: 14/15 e 14/15, 0 falsi allarmi, smentita indipendente in entrambi (sessione nuova con il pacchetto su Antigravity, sottoagente su Codex). Dettagli in `docs/ALTRI-AGENTI.md`.
+
 ## Prossimo
 
 1. **Accordo oltre il 70%** sui repository grandi. Provato il 01/11/2026 con `punti-pericolosi.csv`: 59% (prima 63%), cioè nessun effetto misurabile; le differenze stanno nei temi documentali (governance, data breach, ruolo del DPO, segreti versionati). Prossimo tentativo: domande minime documentali numerate per i controlli D, K, L, chiuse una per una come le categorie, e abbinamento nell'unione dei gap con le stesse righe di codice citate anche se descritti in modo diverso.
-2. **Giro misurato su Codex e Antigravity**: uno `statica` sul banco privacy con ciascun agente, con punteggio, per poter scrivere nel README che le skill funzionano su quegli agenti e non solo che sono state provate.
-3. **Rilascio successivo** insieme ad appsec-sentinel.
+2. **Rilascio successivo** insieme ad appsec-sentinel.
 
 ## Dopo
 
