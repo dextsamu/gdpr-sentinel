@@ -22,7 +22,16 @@ Built for Claude; the sister skill [`appsec-sentinel`](https://github.com/dextsa
 
 ## Install
 
-Same as appsec-sentinel: `.skill` upload in Claude.ai, folder copy for Claude Code, `SKILL.md` convention for Codex CLI and Antigravity (see [`docs/ALTRI-AGENTI.md`](docs/ALTRI-AGENTI.md)), or `npx skills add <owner>/gdpr-sentinel` (discovery checked on a local path).
+**Claude Code, as a plugin** (updates with new releases):
+
+```text
+/plugin marketplace add dextsamu/gdpr-sentinel
+/plugin install gdpr-sentinel@gdpr-sentinel
+```
+
+The twin skill installs from the same marketplace: `/plugin install appsec-sentinel@gdpr-sentinel`.
+
+Same as appsec-sentinel: `.skill` upload in Claude.ai, folder copy for Claude Code, `SKILL.md` convention for Codex CLI and Antigravity (see [`docs/ALTRI-AGENTI.md`](docs/ALTRI-AGENTI.md)), or `npx skills add dextsamu/gdpr-sentinel` (discovery checked on a local path).
 
 ## Limits
 

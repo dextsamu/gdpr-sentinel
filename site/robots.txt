@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://dextsamu.github.io/gdpr-sentinel/sitemap.xml

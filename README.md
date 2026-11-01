@@ -208,7 +208,12 @@ Un esempio anonimizzato, da un caso reale: [`examples/collaudo-statico/report-es
 
 **Claude.ai**: scarica `gdpr-sentinel.skill` dalle [Release](https://github.com/dextsamu/gdpr-sentinel/releases) e caricalo da *Impostazioni → Capacità → Skill*.
 
-**Claude Code**:
+**Claude Code**, come plugin (si aggiorna da solo alle nuove versioni):
+```text
+/plugin marketplace add dextsamu/gdpr-sentinel
+/plugin install gdpr-sentinel@gdpr-sentinel
+```
+Dallo stesso marketplace si installa anche la skill gemella: `/plugin install appsec-sentinel@gdpr-sentinel`. In alternativa, come cartella di skill:
 ```bash
 git clone https://github.com/dextsamu/gdpr-sentinel ~/.claude/skills/gdpr-sentinel
 ```
