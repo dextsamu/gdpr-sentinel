@@ -6,7 +6,7 @@ Cosa è fatto, cosa viene dopo e perché. Le priorità vengono dalle misure (ban
 
 **1.0 – 1.1 (29–30/10/2026).** Mappa dei trattamenti reali, matrice A–N, stati onesti, domande per titolare e DPO, bozze di registro e DPIA, controllo dei cookie su istanze autorizzate, report PDF condiviso con appsec-sentinel.
 
-**Non ancora rilasciato (31/10/2026)**:
+**1.2.0 (01/11/2026), prima versione pubblica**:
 - gap strutturati in `gaps.csv`, pre-passaggio deterministico (fornitori, retention, indizi privacy nel codice);
 - banco privacy con difetti noti: 15/15 in due giri, 0 falsi allarmi sulle esche;
 - `doppio` con unione per causa e smentita dei gap ad alta priorità (`apply_refutations.py`);
@@ -17,7 +17,8 @@ Cosa è fatto, cosa viene dopo e perché. Le priorità vengono dalle misure (ban
 1. **Smentita dei gap con brief dedicati.** Oggi il verificatore riceve le righe di `gaps.csv`; serve un brief per gap (affermazione, riferimenti, ipotesi di smentita tipiche della privacy: obbligo di legge, dato non personale, trattamento di un altro titolare). Obiettivo: stessa pulizia vista in appsec (falsi respinti, nessun vero respinto) su un banco con gap falsi aggiunti apposta.
 2. **Accordo oltre il 70%** sui repository grandi: raggruppamento suggerito delle cause vicine prima dell'unione e controllo che ogni controllo A–N abbia risposto alle sue `domande_minime`.
 3. **Secondo banco privacy** diverso dal primo (sito di un ente pubblico o di una scuola: modulistica, albo, minori, trasparenza). Misura la generalizzazione, che un banco solo non può misurare.
-4. **Rilascio 1.2.0** insieme ad appsec-sentinel.
+4. **Giro misurato su Codex e Antigravity**: uno `statica` sul banco privacy con ciascun agente, con punteggio, per poter scrivere nel README che le skill funzionano su quegli agenti e non solo che sono state provate.
+5. **Rilascio successivo** insieme ad appsec-sentinel.
 
 ## Dopo
 
