@@ -8,6 +8,7 @@
 ![Lingua](https://img.shields.io/badge/lingua-italiano-22c55e?style=for-the-badge)
 ![Agenti](https://img.shields.io/badge/agenti-Claude%20%C2%B7%20Codex%20%C2%B7%20Antigravity-f59e0b?style=for-the-badge)
 ![Versione](https://img.shields.io/badge/versione-1.2.0-6366f1?style=for-the-badge)
+[![Sito](https://img.shields.io/badge/sito-dextsamu.github.io-0f172a?style=for-the-badge)](https://dextsamu.github.io/gdpr-sentinel/)
 
 **«Siamo a posto col GDPR?» è la domanda sbagliata a cui rispondere di sì.**
 Questa skill parte dal codice, dalla configurazione e dai documenti, e porta a titolare, DPO e legale **fatti** e **domande già scritte**, non verdetti. Nata per Claude, provata anche su Codex e Antigravity: vedi [`docs/ALTRI-AGENTI.md`](docs/ALTRI-AGENTI.md).

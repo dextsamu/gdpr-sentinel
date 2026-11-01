@@ -1,5 +1,7 @@
 # gdpr-sentinel
 
+Website: [https://dextsamu.github.io/gdpr-sentinel/](https://dextsamu.github.io/gdpr-sentinel/index.en.html)
+
 **A technical and documentary GDPR / ePrivacy review skill for AI coding agents. It maps real processing, finds gaps with evidence, and never declares compliance.**
 Built for Claude; the sister skill [`appsec-sentinel`](https://github.com/dextsamu/appsec-sentinel) covers application security. Apache-2.0. © Samuele Cucurnia and Pietro Previtali.
 
