@@ -18,6 +18,8 @@ Cosa è fatto, cosa viene dopo e perché. Le priorità vengono dalle misure (ban
 
 **Dopo la 1.2.2**: secondo banco privacy `tests/bench-pa` (scuola, PHP): 15/15 in due giri, 0 falsi allarmi; il pre-passaggio ora riconosce fornitori, tabelle e log anche in PHP e SQL.
 
+**1.3.0 (01/11/2026)**: smentita senza sottoagenti (`refutation_pack.py`, provata sul secondo banco: 13 gap verificati da una sessione nuova), esiti riportati anche nella matrice, `punti-pericolosi.csv` per categorie di indizi (accordo su UnityKore 59%: nessun effetto misurabile), PDF con threat model e test dinamici.
+
 ## Prossimo
 
 1. **Accordo oltre il 70%** sui repository grandi. Provato il 01/11/2026 con `punti-pericolosi.csv`: 59% (prima 63%), cioè nessun effetto misurabile; le differenze stanno nei temi documentali (governance, data breach, ruolo del DPO, segreti versionati). Prossimo tentativo: domande minime documentali numerate per i controlli D, K, L, chiuse una per una come le categorie, e abbinamento nell'unione dei gap con le stesse righe di codice citate anche se descritti in modo diverso.

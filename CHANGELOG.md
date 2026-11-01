@@ -3,12 +3,16 @@
 Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/); versioni secondo [SemVer](https://semver.org/lang/it/).
 
 ## [Non rilasciato]
+
+## [1.3.0] - 2026-11-01
 ### Aggiunto
+- **Report PDF per `standard` e `completo`**: due sezioni nuove, «Threat model» (da `report/threat-model.md`: titoli, elenchi e tabelle resi come testo) e «Test dinamici eseguiti» (le righe della matrice endpoint con `test_eseguito=si`: identità, controllo atteso, esito osservato, finding). Prima il PDF mostrava solo il conteggio degli endpoint provati.
 - **`punti-pericolosi.csv` anche in gdpr-sentinel**: il pre-passaggio scrive una riga da chiudere per ogni categoria di indizi trovata (tracker e risorse di terzi, cookie, dati particolari, minori, geolocalizzazione, log con dati personali, diritti, marketing, fornitori), con i punti in `registro-tool/punti-pericolosi.txt`; ogni riga chiude con `gap` (ID nella colonna `finding`, almeno uno che cita un file della categoria) o `non difetto` con un `file:riga` letto; «non esaminato» fa fallire `chiudi`. Motivo: nei due giri reali sullo stesso gestionale (accordo 63%) metà delle cause viste da un giro solo stava in categorie che l'altro non aveva aperto (log, GPS, video incorporati, dati sanitari). **Misurato su UnityKore, due giri `statica` nuovi**: 27 e 24 gap, `chiudi` senza falliti, tutte le 9 categorie chiuse in entrambi; **accordo 59%** (corrispondente 76%), contro il 63% dei due giri precedenti: nessun miglioramento, entro la variabilità. Le cause viste da un giro solo ora stanno quasi tutte fuori dalle categorie (documenti di governance, procedura data breach, file `.env` versionati, ruolo del DPO, età dei volontari) e una coppia è la stessa causa scritta in due modi (consenso GPS non applicato) che l'unione non abbina. L'obiettivo «oltre il 70%» resta aperto: le categorie rendono uniforme la copertura dove ci sono indizi nel codice, non sui temi documentali.
 - **Smentita senza sottoagenti** (`scripts/refutation_pack.py`, condiviso con appsec-sentinel): pacchetto per una seconda sessione con istruzioni, metodo e un brief per gap ad alta priorità, e reimportazione degli esiti. **Provato** sul secondo banco: una sessione nuova con il solo pacchetto ha verificato 13 gap (12 resistono, 1 declassato: il modello dell'albo non è raggiungibile così com'è scritto) e gli esiti sono stati applicati con `importa`.
 - `apply_refutations.py` riporta gli esiti anche nella colonna `smentita` di `gdpr-matrix.csv`, per le righe i cui gap sono tutti smentiti (prima la matrice restava «non eseguita» e `chiudi` segnalava 7 warning dopo una smentita fatta).
 
 ### Corretto
+- `build_report_pdf.py`: una riga CSV con più colonne dell'intestazione (virgola fuori dalle virgolette) faceva fallire il PDF; ora le colonne in più vengono unite all'ultima. Emerso dal giro `standard` del 01/11/2026 sul PC dell'autore.
 - `gap_briefs.py` sceglieva solo i gap con `smentita` vuota o esattamente «non eseguita»: ora anche «non eseguita | motivo | …», la forma che la skill fa scrivere.
 
 ## [1.2.3] - 2026-11-01
