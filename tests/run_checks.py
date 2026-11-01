@@ -386,5 +386,19 @@ if SBP.exists():
     sp_ = subprocess.run([sys.executable, str(SBP), "score", str(pg)], capture_output=True, text=True)
     check("secondo banco privacy: punteggio pieno sui difetti noti, nessun falso allarme", f"difetti trovati: {len(ptruth['difetti'])}/{len(ptruth['difetti'])}" in sp_.stdout and "falsi allarmi sulle esche: 0/" in sp_.stdout, sp_.stdout[-400:])
 
+if have("refutation_pack.py") and have("gap_briefs.py"):
+    gp_ = tmp / "gpack"; gpr = tmp / "gpack-repo"; (gpr / "src").mkdir(parents=True); gp_.mkdir()
+    (gpr / "src" / "a.ts").write_text("gtag('config','G-1')\n", encoding="utf-8")
+    (gp_ / "gaps.csv").write_text("id,controllo,titolo,riferimenti,stato,priorita,rischio_interessati,norma,domanda_id,smentita\n"
+                                  "GDPR-001,E,Analytics senza consenso,src/a.ts:1,confermato da codice/config,alta,tracciamento,art. 122,,non eseguita | nessuno | -\n", encoding="utf-8")
+    (gp_ / "gdpr-matrix.csv").write_text("controllo,area,stato,gap,smentita\nE,Cookie,confermato da codice/config,GDPR-001,non eseguita | nessuno | -\n", encoding="utf-8")
+    run("refutation_pack.py", "prepara", gp_, "--repo", gpr)
+    pkg = gp_ / "smentite" / "pacchetto"
+    (pkg / "esiti.json").write_text(json.dumps([{"id": "GDPR-001", "esito": "resiste", "verificatore": "sessione nuova, solo pacchetto", "tentativi": ["cercato un blocco del consenso: assente"]}]), encoding="utf-8")
+    ri = run("refutation_pack.py", "importa", gp_, pkg / "esiti.json")
+    mx = (gp_ / "gdpr-matrix.csv").read_text(encoding="utf-8"); gx = (gp_ / "gaps.csv").read_text(encoding="utf-8")
+    check("pacchetto di smentita (gdpr): brief del gap con smentita «non eseguita», esiti applicati a gaps.csv e alla matrice",
+          (pkg / "smentita-GDPR-001.md").exists() and "resiste | sessione nuova" in gx and "resiste | sessione nuova" in mx, ri.stdout + ri.stderr)
+
 print(f"\nriusciti: {ok}  falliti: {fail}")
 sys.exit(1 if fail else 0)

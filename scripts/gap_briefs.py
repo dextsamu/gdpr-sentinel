@@ -101,7 +101,7 @@ def main() -> int:
     pr = {x.strip().lower() for x in a.priorita.split(",")}
     rows = [r for r in csv.DictReader(gp.open(encoding="utf-8")) if not (r.get("id") or "").startswith("ESEMPIO")]
     sel = [r for r in rows if (r.get("stato") or "").strip() in OK_STATI and (r.get("priorita") or "").strip().lower() in pr
-           and (r.get("smentita") or "").strip().lower() in ("", "non eseguita")]
+           and (r.get("smentita") or "").strip().lower().split("|")[0].strip() in ("", "non eseguita")]
     out = a.audit / "smentite"
     out.mkdir(exist_ok=True)
     for r in sel:

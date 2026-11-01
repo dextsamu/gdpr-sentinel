@@ -3,6 +3,12 @@
 Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/); versioni secondo [SemVer](https://semver.org/lang/it/).
 
 ## [Non rilasciato]
+### Aggiunto
+- **Smentita senza sottoagenti** (`scripts/refutation_pack.py`, condiviso con appsec-sentinel): pacchetto per una seconda sessione con istruzioni, metodo e un brief per gap ad alta priorità, e reimportazione degli esiti. **Provato** sul secondo banco: una sessione nuova con il solo pacchetto ha verificato 13 gap (12 resistono, 1 declassato: il modello dell'albo non è raggiungibile così com'è scritto) e gli esiti sono stati applicati con `importa`.
+- `apply_refutations.py` riporta gli esiti anche nella colonna `smentita` di `gdpr-matrix.csv`, per le righe i cui gap sono tutti smentiti (prima la matrice restava «non eseguita» e `chiudi` segnalava 7 warning dopo una smentita fatta).
+
+### Corretto
+- `gap_briefs.py` sceglieva solo i gap con `smentita` vuota o esattamente «non eseguita»: ora anche «non eseguita | motivo | …», la forma che la skill fa scrivere.
 
 ## [1.2.3] - 2026-11-01
 ### Aggiunto

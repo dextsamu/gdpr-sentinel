@@ -27,3 +27,6 @@ Scrivilo nella colonna `smentita` di `gdpr-matrix.csv` **solo per i gap** (righe
 - `non eseguita`: nessun verificatore indipendente.
 
 Rilancia `check_matrix.py`. La smentita riduce i falsi positivi: non dimostra che il gap sia vero né sostituisce il parere di DPO o legale.
+
+## Senza sottoagenti: pacchetto per una seconda sessione
+Se nella tua sessione non puoi avviare un verificatore nuovo, non fermarti a «non eseguita»: proponi all'utente una seconda sessione (un'altra conversazione, un altro agente come Codex o Antigravity, un collega) e prepara il pacchetto con `scripts/refutation_pack.py prepara <cartella-audit> --repo <repository>`. Scrive in `smentite/pacchetto/` le istruzioni da incollare come primo messaggio (`ISTRUZIONI.md`), questo metodo e un brief per ogni gap ad alta priorità, senza le conclusioni dell'autore. Quando la seconda sessione ha scritto `esiti.json`, `scripts/refutation_pack.py importa <cartella-audit> <esiti.json>` li controlla e li applica. «non eseguita» resta solo se l'utente non può o non vuole aprire una seconda sessione.
