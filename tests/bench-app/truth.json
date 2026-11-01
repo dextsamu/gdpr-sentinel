@@ -1,0 +1,206 @@
+{
+  "_nota": "Verità del banco privacy. NON va data all'agente (prepare non la copia). Un difetto è trovato se un gap (o finding) cita uno dei file E il titolo/osservato contiene una delle parole. Un'esca è un falso allarme se un gap la cita affermando un problema con priorità media o alta. Dopo il primo giro reale: tre «falsi allarmi» erano difetti veri piantati senza volerlo (sessione dal solo id nel cookie, nessuna cancellazione dei soci cessati, esportazione incompleta), ora P13–P15; le esche contano solo se il gap afferma il problema sbagliato (es. «cookie di sessione senza consenso»), non se cita lo stesso file per un altro motivo.",
+  "difetti": [
+    {
+      "id": "P01",
+      "controllo": "E",
+      "alto": true,
+      "titolo": "Google Analytics caricato senza consenso, mentre l'informativa dice che non si usano strumenti di analisi",
+      "file": [
+        "src/app/layout.tsx"
+      ],
+      "parole": "analytics|gtag|googletagmanager|\\bga\\b|statistic"
+    },
+    {
+      "id": "P02",
+      "controllo": "E",
+      "alto": false,
+      "titolo": "Google Fonts caricati dai server di Google (IP del visitatore negli USA) senza informativa né consenso",
+      "file": [
+        "src/app/layout.tsx"
+      ],
+      "parole": "font"
+    },
+    {
+      "id": "P03",
+      "controllo": "I",
+      "alto": true,
+      "titolo": "Sentry con sendDefaultPii e session replay senza mascheramento: fornitore e trasferimento extra-UE non dichiarati",
+      "file": [
+        "sentry.client.config.ts"
+      ],
+      "parole": "sentry|replay|pii"
+    },
+    {
+      "id": "P04",
+      "controllo": "C",
+      "alto": true,
+      "titolo": "Diagnosi e certificato medico raccolti nelle assenze, mentre l'informativa esclude i dati sanitari",
+      "file": [
+        "prisma/schema.prisma",
+        "src/app/api/assenze/route.ts"
+      ],
+      "parole": "diagnos|salute|sanitar|medic|particolar|art\\. ?9"
+    },
+    {
+      "id": "P05",
+      "controllo": "G",
+      "alto": false,
+      "titolo": "Registri di accesso (IP, user agent) senza cancellazione, mentre l'informativa promette 6 mesi",
+      "file": [
+        "prisma/schema.prisma",
+        "src/jobs/retention.ts",
+        "src/middleware.ts"
+      ],
+      "parole": "accesslog|access.?log|registr\\w* di accesso|log di accesso|6 mesi"
+    },
+    {
+      "id": "P06",
+      "controllo": "F",
+      "alto": true,
+      "titolo": "«Elimina il mio account» disattiva soltanto: i dati restano",
+      "file": [
+        "src/app/api/me/delete/route.ts"
+      ],
+      "parole": "cancell|elimin|disattiv|isactive|erasure|art\\. ?17"
+    },
+    {
+      "id": "P07",
+      "controllo": "N",
+      "alto": true,
+      "titolo": "Posizione GPS ad alta precisione dei soci a ogni turno, senza conservazione definita né informativa",
+      "file": [
+        "src/app/api/checkin/route.ts",
+        "src/components/CheckinButton.tsx",
+        "prisma/schema.prisma"
+      ],
+      "parole": "gps|geoloc|posizion|lat|coordinat"
+    },
+    {
+      "id": "P08",
+      "controllo": "H",
+      "alto": false,
+      "titolo": "Email, telefono e nome dei nuovi iscritti scritti nei log",
+      "file": [
+        "src/app/api/auth/register/route.ts"
+      ],
+      "parole": "log"
+    },
+    {
+      "id": "P09",
+      "controllo": "M",
+      "alto": false,
+      "titolo": "Consenso alla newsletter pre-selezionato (casella spuntata e valore predefinito true)",
+      "file": [
+        "src/app/registrati/page.tsx",
+        "prisma/schema.prisma",
+        "src/app/api/auth/register/route.ts"
+      ],
+      "parole": "newsletter|pre.?spunt|pre.?selez|defaultchecked|default"
+    },
+    {
+      "id": "P10",
+      "controllo": "E",
+      "alto": false,
+      "titolo": "Banner dei cookie con il solo «Accetta», senza rifiuto né scelta",
+      "file": [
+        "src/components/CookieBanner.tsx"
+      ],
+      "parole": "banner|rifiut|accetta|consenso"
+    },
+    {
+      "id": "P11",
+      "controllo": "G",
+      "alto": false,
+      "titolo": "Backup conservati senza rotazione, mentre l'informativa dice 30 giorni",
+      "file": [
+        "scripts/backup.sh"
+      ],
+      "parole": "backup"
+    },
+    {
+      "id": "P12",
+      "controllo": "J",
+      "alto": false,
+      "titolo": "Email e nome inviati a Mailchimp (USA), fornitore non indicato nell'informativa",
+      "file": [
+        "src/lib/newsletter.ts"
+      ],
+      "parole": "mailchimp|newsletter|usa|stati uniti|extra"
+    },
+    {
+      "id": "P13",
+      "controllo": "H",
+      "alto": true,
+      "titolo": "La sessione identifica il socio dal solo id nel cookie, senza verificare il token: chi conosce un id legge i dati di un altro socio (export con assenze e posizioni)",
+      "file": [
+        "src/lib/session.ts"
+      ],
+      "parole": "token|identific|verific|spacci|impersona|currentmember|id del socio|indovin|furto"
+    },
+    {
+      "id": "P14",
+      "controllo": "G",
+      "alto": false,
+      "titolo": "Nessuna cancellazione dei soci cessati dopo i 24 mesi dichiarati (l'unico job pulisce i tentativi di login)",
+      "file": [
+        "src/jobs/retention.ts",
+        "public/privacy.md",
+        "src/app/api/me/delete/route.ts"
+      ],
+      "parole": "24 mesi|cessat|soci|member|conservazion|retention"
+    },
+    {
+      "id": "P15",
+      "controllo": "F",
+      "alto": false,
+      "titolo": "L'esportazione dei dati non comprende log di accesso e tentativi di login",
+      "file": [
+        "src/app/api/me/export/route.ts"
+      ],
+      "parole": "export|esport|copia|access|incomplet|non include|mancan"
+    }
+  ],
+  "esche": [
+    {
+      "id": "Q01",
+      "titolo": "Cookie di sessione tecnico (httpOnly, 8 ore): non richiede consenso",
+      "file": [
+        "src/lib/session.ts"
+      ],
+      "parole": "(consenso|consent|banner|profilazion)[^.]{0,80}(cookie di sessione|cookie tecnico|sid)|(cookie di sessione|cookie tecnico|sid)[^.]{0,80}(consenso|consent|profilazion)"
+    },
+    {
+      "id": "Q02",
+      "titolo": "Font locale servito dal sito (next/font/local)",
+      "file": [
+        "public/fonts/Titoli.woff2"
+      ],
+      "parole": "(font local|titoli\\.woff|next/font/local)"
+    },
+    {
+      "id": "Q03",
+      "titolo": "Tentativi di login cancellati dopo 30 giorni da un job pianificato",
+      "file": [
+        "src/jobs/retention.ts"
+      ],
+      "parole": "(tentativ|loginattempt)[^.]{0,60}(non (vengono )?cancell|senza cancellazion|conservat\\w* (senza|oltre)|mai cancell)"
+    },
+    {
+      "id": "Q04",
+      "titolo": "Coordinate della sede dell'associazione (non sono dati personali)",
+      "file": [
+        "src/components/MappaSede.tsx"
+      ],
+      "parole": "(sede)[^.]{0,60}(dati personali|geoloc|gps)"
+    },
+    {
+      "id": "Q05",
+      "titolo": "Esportazione dei dati dell'interessato presente e funzionante",
+      "file": [
+        "src/app/api/me/export/route.ts"
+      ],
+      "parole": "(manca|assente|non esiste|non è possibile|impossibile)[^.]{0,40}(esport|portabil)|(esport|portabil)[^.]{0,40}(manca|assente|non esiste|non disponibile)"
+    }
+  ]
+}

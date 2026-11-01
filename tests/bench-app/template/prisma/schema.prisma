@@ -1,0 +1,56 @@
+model Organization {
+  id        String  @id @default(cuid())
+  name      String
+  sedeLat   Float
+  sedeLng   Float
+  members   Member[]
+}
+model Member {
+  id              String   @id @default(cuid())
+  nome            String
+  cognome         String
+  email           String   @unique
+  telefono        String?
+  passwordHash    String
+  newsletterOptIn Boolean  @default(true)
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  organizationId  String
+  organization    Organization @relation(fields: [organizationId], references: [id])
+  checkins        Checkin[]
+  assenze         Assenza[]
+}
+model Checkin {
+  id        String   @id @default(cuid())
+  memberId  String
+  lat       Float
+  lng       Float
+  accuracy  Float
+  createdAt DateTime @default(now())
+  member    Member   @relation(fields: [memberId], references: [id])
+}
+model Assenza {
+  id                String   @id @default(cuid())
+  memberId          String
+  dal               DateTime
+  al                DateTime
+  motivo            String
+  diagnosi          String?
+  certificatoMedico String?
+  member            Member   @relation(fields: [memberId], references: [id])
+}
+model AccessLog {
+  id        String   @id @default(cuid())
+  memberId  String?
+  ip        String
+  userAgent String
+  path      String
+  createdAt DateTime @default(now())
+}
+model LoginAttempt {
+  id        String   @id @default(cuid())
+  email     String
+  ip        String
+  success   Boolean
+  createdAt DateTime @default(now())
+}

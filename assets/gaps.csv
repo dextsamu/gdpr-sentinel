@@ -1,0 +1,2 @@
+id,controllo,titolo,riferimenti,stato,priorita,rischio_interessati,norma,domanda_id,smentita
+ESEMPIO-001,E,"esempio: Google Analytics caricato prima del consenso","src/app/layout.tsx:12",confermato da codice/config,alta,"tracciamento dei visitatori senza scelta","art. 122 Codice privacy; Linee guida Garante cookie 2021",,non eseguita

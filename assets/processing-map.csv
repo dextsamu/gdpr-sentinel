@@ -1,0 +1,2 @@
+id,trattamento,dati_e_interessati,finalita,ruoli,base_giuridica_e_condizione,sistemi_e_destinatari,paesi_e_trasferimenti,retention,diritti_e_controlli,evidenze,gap
+T01,esempio: iscrizione newsletter,email dei visitatori,invio comunicazioni,titolare: ente; responsabile: fornitore email,non verificato,form sito + provider email,non verificato,non verificato,non verificato,codice form (file:riga),da verificare con il titolare

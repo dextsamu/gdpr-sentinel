@@ -1,0 +1,2 @@
+{ "name": "portale-soci", "version": "1.4.0", "private": true,
+  "dependencies": { "next": "15.0.3", "@prisma/client": "5.22.0", "@sentry/nextjs": "8.40.0", "bcryptjs": "2.4.3", "node-cron": "3.0.3", "zod": "3.23.8" } }

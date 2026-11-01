@@ -1,0 +1,115 @@
+{
+ "titolo": "Valutazione privacy tecnica e documentale",
+ "tipo": "Report GDPR · esempio anonimizzato",
+ "sottotitolo": "Gestionale web (caso reale anonimizzato)",
+ "oggetto": "Repository del cliente (esempio)",
+ "versione": "commit esempio0001",
+ "modalita": "solo analisi statica e documentale",
+ "data": "2026-10-30",
+ "autore": "Claude con gdpr-sentinel",
+ "classificazione": "ESEMPIO · RISERVATO",
+ "sintesi": [
+  "Matrice A–N: 14 controlli, 4 non verificabili perché dipendono da documenti o decisioni del titolare.",
+  "Punto concreto: l'informativa dice «server in UE, nessun trasferimento extra-SEE» e non nomina destinatari; il codice usa Google (font, backup) e Twilio.",
+  "Dodici domande già formulate per titolare, DPO, legale e fornitori.",
+  "Dati particolari: il modello delle assenze comprende certificati medici; i backup su un servizio cloud non risultano cifrati nella documentazione letta.",
+  "Il report non esprime giudizi di conformità: le decisioni spettano al titolare."
+ ],
+ "note_copertura": [
+  "Sei trattamenti mappati; documenti letti per presenza del tema, non per intero."
+ ],
+ "non_verificato": [
+  "Contratti con i fornitori e registro dei trattamenti.",
+  "Cookie reali in un browser pulito (test preparato, non eseguito).",
+  "Contenuto integrale di DPIA e procedura di violazione."
+ ],
+ "domande": [
+  {
+   "id": "Q1",
+   "destinatario": "Titolare",
+   "domanda": "Per ogni organizzazione cliente, chi è titolare e chi responsabile? Esiste un contratto di nomina con il fornitore del servizio?"
+  },
+  {
+   "id": "Q2",
+   "destinatario": "Titolare, DPO",
+   "domanda": "Quali basi giuridiche sono documentate per timbrature, assenze, formazione e contatti commerciali?"
+  },
+  {
+   "id": "Q3",
+   "destinatario": "DPO",
+   "domanda": "Per i certificati medici (art. 9): quale condizione si applica, chi può accedervi e come sono protetti?"
+  },
+  {
+   "id": "Q4",
+   "destinatario": "Titolare, DPO",
+   "domanda": "L'informativa va aggiornata con i destinatari reali (Google, Twilio, altri)? Per i fornitori statunitensi: DPF o clausole tipo? Da verificare alla fonte ora."
+  },
+  {
+   "id": "Q5",
+   "destinatario": "Sviluppatore, DPO",
+   "domanda": "Il caricamento di font e icone da Google va mantenuto o conviene ospitarli sul proprio server (self-hosting)?"
+  },
+  {
+   "id": "Q6",
+   "destinatario": "Titolare, sviluppatore",
+   "domanda": "Come si cancellano i dati dai backup quando un interessato esercita l'art. 17? Quanto durano i backup rispetto alla retention dei dati?"
+  },
+  {
+   "id": "Q7",
+   "destinatario": "Sviluppatore",
+   "domanda": "Come si chiudono i finding di sicurezza che incidono sull'art. 32 (route demo senza login, MFA solo lato client, dipendenze)?"
+  },
+  {
+   "id": "Q8",
+   "destinatario": "Titolare, fornitori",
+   "domanda": "Esistono DPA con Google, Twilio, il provider di posta e l'hosting?"
+  },
+  {
+   "id": "Q9",
+   "destinatario": "Titolare",
+   "domanda": "Registro dei trattamenti e nomina del DPO: sono disponibili?"
+  },
+  {
+   "id": "Q10",
+   "destinatario": "Titolare, DPO",
+   "domanda": "Procedura di violazione dei dati: testo vigente, chi decide, esiste un registro delle violazioni?"
+  },
+  {
+   "id": "Q11",
+   "destinatario": "Titolare",
+   "domanda": "Quale base giuridica e quale informativa per i contatti commerciali (lead e preventivi)?"
+  },
+  {
+   "id": "Q12",
+   "destinatario": "Titolare, legale",
+   "domanda": "Per i clienti con dipendenti: accordo sindacale o autorizzazione per le timbrature con GPS (L. 300/1970 art. 4)?"
+  }
+ ],
+ "piano": [
+  {
+   "fase": "Subito",
+   "azione": "Allineare l'informativa ai destinatari e ai trasferimenti reali (Q4).",
+   "responsabile": "Titolare, DPO"
+  },
+  {
+   "fase": "Subito",
+   "azione": "Verificare cifratura e accessi dei backup su Google Drive (Q6).",
+   "responsabile": "Sviluppatore, titolare"
+  },
+  {
+   "fase": "Prossime settimane",
+   "azione": "Chiudere i finding di sicurezza che incidono sull'art. 32 (Q7).",
+   "responsabile": "Sviluppatore"
+  },
+  {
+   "fase": "Prossime settimane",
+   "azione": "Raccogliere DPA, registro e nomina del DPO (Q8, Q9).",
+   "responsabile": "Titolare"
+  },
+  {
+   "fase": "Pianificato",
+   "azione": "Valutare l'hosting locale dei font (Q5) e il test del browser su istanza autorizzata.",
+   "responsabile": "Sviluppatore"
+  }
+ ]
+}

@@ -1,0 +1,7 @@
+id,documento,tipo,data_o_versione,cosa_afferma,evidenza_nel_codice,stato,rilievo,azione_proposta
+D01,Pagina privacy dell'applicazione,informativa,non datata,"Server nell'UE, nessun trasferimento extra-SEE, nessun destinatario nominato","Font da Google, messaggi tramite Twilio, backup su Google Drive",incoerente,Informativa non coerente col trattamento reale,Aggiornare l'informativa con i destinatari reali
+D02,DPIA,valutazione d'impatto,"v2.1, 03/2026",DPIA con DPO e misure,Non cita i fornitori reali né i trasferimenti; contenuto non riletto per intero,non verificabile,Possibile scostamento tra trattamenti reali e valutazione,Verificare con il DPO
+D03,Guide ai backup,backup,non datate,Backup off-site su un servizio cloud con retention di 90 giorni,Nessuna menzione di cifratura né prova di ripristino,non verificabile,Rischio per i dati dei certificati medici,Verificare cifratura e test di ripristino
+D04,Procedura di violazione dei dati,incidenti,02/2026,Piano di risposta agli incidenti,Presente; contenuto non riletto per intero,non verificabile,Applicabilità ed esercitazioni non verificate,Verificare con il titolare
+D05,Registro dei trattamenti,registro art. 30,—,Nessun documento trovato,Non rilevato nel repository,mancante,Può essere custodito altrove dal titolare,Chiedere al titolare se esiste
+D06,Accordo sindacale sulle timbrature,accordo,non datato,Accordo sul controllo a distanza dei lavoratori,Presente nel repository; validità per ciascun cliente non verificata,non verificabile,Dipende dal singolo cliente,Verificare per ogni cliente
