@@ -40,9 +40,17 @@ HOST_CLASS = {"fonts.googleapis.com": ("Google Fonts", "font di terzi", "indiriz
               "mailchimp.com": ("Mailchimp", "email marketing", "email, profilo"), "sentry.io": ("Sentry", "monitoraggio errori", "IP, identificativi, contesto d'errore"),
               "hotjar.com": ("Hotjar", "analytics/registrazione sessioni", "interazioni, IP"), "clarity.ms": ("Microsoft Clarity", "registrazione sessioni", "interazioni, IP"),
               "connect.facebook.net": ("Meta Pixel", "marketing", "IP, eventi"), "youtube.com": ("YouTube", "video incorporati", "IP, cookie"),
-              "brevo.com": ("Brevo", "email marketing", "email, profilo"), "sendinblue.com": ("Brevo", "email marketing", "email, profilo")}
+              "brevo.com": ("Brevo", "email marketing", "email, profilo"), "sendinblue.com": ("Brevo", "email marketing", "email, profilo"),
+              "mailgun.net": ("Mailgun", "invio email", "email, contenuto dei messaggi"), "api.sendgrid.com": ("SendGrid", "invio email", "email, contenuto"),
+              "youtube-nocookie.com": ("YouTube (modalità senza cookie)", "video incorporati", "IP"), "player.vimeo.com": ("Vimeo", "video incorporati", "IP, cookie"),
+              "hcaptcha.com": ("hCaptcha", "anti-bot", "IP, dati del browser"), "challenges.cloudflare.com": ("Cloudflare Turnstile", "anti-bot", "IP, dati del browser")}
+# servizi riconoscibili solo dal percorso (stesso host www.google.com)
+PATH_CLASS = [(r"(www\.)?google\.com/recaptcha|gstatic\.com/recaptcha", ("Google reCAPTCHA", "anti-bot", "IP, dati del browser e di navigazione")),
+              (r"(www\.)?google\.com/maps", ("Google Maps", "mappe", "IP, posizione cercata"))]
+CODE_SUFFIX = {".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".vue", ".svelte", ".css", ".html", ".htm", ".py", ".php", ".rb", ".go", ".java",
+               ".cs", ".twig", ".erb", ".jsp", ".cshtml", ".aspx", ".env", ".example", ".md", ".yml", ".yaml", ".json"}
 GROUPS = {
-    "Identificativi e contatti": r"email|telefon|phone|cellulare|cognome|surname|lastname|firstname|username|indirizzo|address|zip",
+    "Identificativi e contatti": r"email|telefon|phone|cellulare|cognome|surname|lastname|firstname|username|indirizzo|address|zip|(^|_)nome$|(^|_)name$|nominativ",
     "Dati anagrafici e documenti": r"nasc|birth|codicefiscale|cf\b|fiscalcode|documento|passport|carta|patente|tessera",
     "Geolocalizzazione": r"\blat\b|\blng\b|gps|latitud|longitud|geoloc|position",
     "Dati di accesso e tecnici": r"password|hash|token|session|ipaddress|\bip\b|useragent|mfa|totp|webauthn|credential",
@@ -61,7 +69,16 @@ def files(root: Path):
 def models(root: Path):
     out = []
     for p in files(root):
-        if p.suffix == ".prisma":
+        if p.suffix == ".sql":   # schema SQL (anche PHP, Laravel, Django senza models.py): CREATE TABLE nome (campi …)
+            txt = p.read_text(encoding="utf-8", errors="replace")
+            for m in re.finditer(r"(?is)create\s+table\s+(?:if\s+not\s+exists\s+)?[`\"\[]?(\w+)[`\"\]]?\s*\((.*?)\)\s*;", txt):
+                cols = [c for c in re.findall(r"(?m)^\s*[`\"\[]?(\w+)[`\"\]]?\s+[A-Za-z]", m.group(2))
+                        if c.upper() not in {"PRIMARY", "KEY", "UNIQUE", "CONSTRAINT", "FOREIGN", "INDEX", "CHECK"}]
+                for extra in re.findall(r",\s*[`\"\[]?(\w+)[`\"\]]?\s+(?:VARCHAR|CHAR|TEXT|INT|DATE|DATETIME|TINYINT|DECIMAL|ENUM|BOOLEAN|MEDIUMTEXT)", m.group(2), re.I):
+                    if extra not in cols:
+                        cols.append(extra)
+                out.append((m.group(1), cols, str(p.relative_to(root))))
+        elif p.suffix == ".prisma":
             txt = p.read_text(encoding="utf-8", errors="replace")
             for m in re.finditer(r"^model\s+(\w+)\s*\{(.*?)^\}", txt, re.S | re.M):
                 out.append((m.group(1), re.findall(r"^\s+(\w+)\s+\w+", m.group(2), re.M), str(p.relative_to(root))))
@@ -107,9 +124,9 @@ def main():
                         sup.setdefault(v[0], {"tipo": v[1], "dati": v[2], "ev": set()})["ev"].add(f"package.json: {dep}")
         except json.JSONDecodeError:
             pass
-    rx = re.compile(r"https?://([a-z0-9.-]+\.[a-z]{2,})")
+    rx = re.compile(r"https?://([a-z0-9.-]+\.[a-z]{2,})(/[^\s'\"<>)]*)?")
     for p in files(a.repo):
-        if p.suffix.lower() not in {".ts", ".tsx", ".js", ".jsx", ".css", ".html", ".py", ".env", ".example", ".md", ".yml", ".yaml", ".json"} and "env" not in p.name:
+        if p.suffix.lower() not in CODE_SUFFIX and "env" not in p.name:
             continue
         if p.stat().st_size > 400000:
             continue
@@ -117,10 +134,10 @@ def main():
         if "package-lock" in rel or "node_modules" in rel:
             continue
         for ln, line in enumerate(p.read_text(encoding="utf-8", errors="replace").splitlines(), 1):
-            for h in rx.findall(line):
+            for h, path in rx.findall(line):
                 key = next((k for k in HOST_CLASS if h == k or h.endswith("." + k)), None)   # anche i sottodomini (www., us21.api.)
-                if key:
-                    v = HOST_CLASS[key]
+                v = HOST_CLASS[key] if key else next((c for r_, c in PATH_CLASS if re.match(r_, h + path)), None)
+                if v:
                     sup.setdefault(v[0], {"tipo": v[1], "dati": v[2], "ev": set()})["ev"].add(f"{rel}:{ln}")
     with (a.out / "processing-map-bozza.csv").open("w", newline="", encoding="utf-8") as fh:
         w = csv.DictWriter(fh, fieldnames=["id", "trattamento", "dati_e_interessati", "finalita", "ruoli", "base_giuridica_e_condizione", "sistemi_e_destinatari", "paesi_e_trasferimenti", "retention", "diritti_e_controlli", "evidenze", "gap"])

@@ -3,6 +3,11 @@
 Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/); versioni secondo [SemVer](https://semver.org/lang/it/).
 
 ## [Non rilasciato]
+### Aggiunto
+- **Secondo banco privacy** `tests/bench-pa`: sito di un istituto comprensivo in PHP + MariaDB (minori, albo online, amministrazione trasparente, modulistica, servizi incorporati), 15 difetti e 5 esche. **Misurato**: due giri `statica` indipendenti, 15/15 difetti ciascuno (6/6 alti), 0 falsi allarmi sulle esche, accordo 15/15 sui difetti noti. Due regole delle esche sono state ristrette dopo il primo giro, perché contavano come falso allarme un gap corretto che citava la pagina degli eventi come confronto e un gap vero sul file di log.
+
+### Corretto (emerso dal secondo banco)
+- Il pre-passaggio non riconosceva nulla su un sito PHP: 0 fornitori e 0 tabelle. Ora `draft_ropa.py` legge anche i file `.php` (e `.htm`, `.vue`, `.svelte`, `.twig`, `.erb`, `.jsp`, `.cshtml`…), riconosce i servizi dal percorso (Google reCAPTCHA e Google Maps su `www.google.com`), Mailgun, SendGrid, YouTube senza cookie, Vimeo, hCaptcha, Turnstile, e ricava i trattamenti dagli schemi SQL (`CREATE TABLE`); `privacy_scan.py` riconosce i log PHP e Python (`file_put_contents(… .log)`, `error_log`, `syslog`, `logging`) e i cookie PHP (`setcookie`, `session_start`). Sul sito della scuola: 6 fornitori, 7 tabelle, il log dei contatti.
 
 ## [1.2.2] - 2026-11-01
 ### Aggiunto

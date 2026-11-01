@@ -362,5 +362,29 @@ if have("gap_briefs.py"):
           files == ["smentita-GDPR-001.md"] and "return json(await db.member.find())" in b1.read_text(encoding="utf-8")
           and "un altro percorso" in b1.read_text(encoding="utf-8") and "motivazione" not in b1.read_text(encoding="utf-8").split("## Affermazione")[1], str(files))
 
+SBP = ROOT / "tests" / "bench-pa" / "score_bench.py"
+if SBP.exists():
+    ptruth = json.loads((ROOT / "tests" / "bench-pa" / "truth.json").read_text(encoding="utf-8"))
+    pd_ = tmp / "pabench"; pd_.mkdir()
+    subprocess.run([sys.executable, str(SBP), "prepare", str(pd_)], capture_output=True, text=True)
+    papp = pd_ / "bench-app"
+    hint = [str(q.relative_to(papp)) for q in papp.rglob("*") if q.is_file() and ".git" not in q.parts
+            and re.search(r"(?i)vulnerab|\bbug\b|flaw|difetto|fixme|todo|violazion|non conform", q.read_text(encoding="utf-8", errors="replace"))]
+    check("secondo banco privacy (scuola, PHP): pronto, senza la verità, senza commenti che indichino i difetti",
+          (papp / "public" / "privacy.html").exists() and not (papp / "truth.json").exists() and not hint, str(hint))
+    pw = tmp / "pa-prepass"
+    run("init_gdpr.py", pw); run("gdpr_prepass.py", papp, "--audit", pw)
+    forn = (pw / "registro-tool" / "fornitori-bozza.csv").read_text(encoding="utf-8")
+    pmap = (pw / "registro-tool" / "processing-map-bozza.csv").read_text(encoding="utf-8")
+    pscan = json.loads((pw / "registro-tool" / "privacy-scan.json").read_text(encoding="utf-8"))
+    check("prepass GDPR su PHP: fornitori dai percorsi (reCAPTCHA, Maps), Mailgun, YouTube; tabelle dallo schema SQL; log con dati personali",
+          all(x in forn for x in ("Google Fonts", "Google reCAPTCHA", "Google Maps", "Mailgun", "YouTube")) and "iscrizioni" in pmap
+          and "public/contatti_invia.php" in {x["file"] for x in pscan["log"]}, forn[:400])
+    pg = tmp / "pa-perfect"; pg.mkdir()
+    (pg / "gaps.csv").write_text("id,controllo,titolo,riferimenti,stato,priorita,rischio_interessati,norma,domanda_id,smentita\n" + "".join(
+        f'GDPR-{i:03d},{d["controllo"]},"{d["titolo"]}",{d["file"][0]}:1,confermato da codice/config,alta,,,,\n' for i, d in enumerate(ptruth["difetti"], 1)), encoding="utf-8")
+    sp_ = subprocess.run([sys.executable, str(SBP), "score", str(pg)], capture_output=True, text=True)
+    check("secondo banco privacy: punteggio pieno sui difetti noti, nessun falso allarme", f"difetti trovati: {len(ptruth['difetti'])}/{len(ptruth['difetti'])}" in sp_.stdout and "falsi allarmi sulle esche: 0/" in sp_.stdout, sp_.stdout[-400:])
+
 print(f"\nriusciti: {ok}  falliti: {fail}")
 sys.exit(1 if fail else 0)

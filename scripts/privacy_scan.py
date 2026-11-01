@@ -37,7 +37,7 @@ CAT = {
                           r"google\.com/maps/embed|recaptcha|intercom|snap\.licdn|static\.ads-twitter|analytics\.tiktok|matomo|plausible\.io|"
                           r"cdn\.jsdelivr\.net|unpkg\.com|cdnjs\.cloudflare\.com|@vercel/analytics|posthog|mixpanel|segment\.(com|io)|"
                           r"@next/third-parties|next/script[^\n]*(googletag|analytics))"),
-    "cookie": re.compile(r"(document\.cookie\s*=|cookies\(\)\)?\.set\(|\.cookies\.set\(|setCookie\(|res\.cookie\(|response\.set_cookie|"
+    "cookie": re.compile(r"(document\.cookie\s*=|cookies\(\)\)?\.set\(|\.cookies\.set\(|setCookie\(|setcookie\(|session_start\(|res\.cookie\(|response\.set_cookie|"
                          r"localStorage\.setItem\(|sessionStorage\.setItem\()"),
     "consenso": re.compile(r"(?i)(cookieconsent|cookie-consent|cookiebot|onetrust|iubenda|klaro|tarteaucitron|consentmanager|"
                            r"\bconsent(Given|Status|State)?\b|banner[-_ ]?cookie|cookie[-_ ]?banner)"),
@@ -48,9 +48,10 @@ CAT = {
                          r"parental|genitor\w*|tutore)"),
     "geolocalizzazione": re.compile(r"(?i)(navigator\.geolocation|getCurrentPosition|watchPosition|\bgps_?lat\w*|\bgps_?l(ng|on)\w*|"
                                     r"\blatitude\b|\blongitude\b|\b(lat|lng|lon)\s*[,}]|geofenc\w*|geolocat\w*)"),
-    "log": re.compile(r"(?i)(console\.(log|info|warn|error|debug)|logger\.(info|debug|warn|error|log)|\bprint\(|log\.(info|debug|warn|error))"
+    "log": re.compile(r"(?i)(console\.(log|info|warn|error|debug)|logger\.(info|debug|warn|error|log)|\bprint\(|log\.(info|debug|warn|error)|"
+                      r"logging\.(info|debug|warn\w*|error)|error_log\(|syslog\(|file_put_contents\([^\n]{0,80}\.log|fwrite\(\$\w*log)"
                       r"[^\n]{0,200}\b(email|e-mail|phone|telefono|cellulare|codice_?fiscale|codiceFiscale|\bcf\b|ip_?address|\bip\b|"
-                      r"indirizzo|address|password|iban|user\b|utente\b|body\b|req\.body|payload)"),
+                      r"indirizzo|address|password|iban|user\b|utente\b|body\b|req\.body|payload|nome|name|msg|messaggio|message|remote_addr|_post)"),
     "diritti": re.compile(r"(?i)((delete|elimina|cancella)\w*[_-]?(account|utente|user|profil\w*|me\b)|"
                           r"(export|esporta)\w*[_-]?(data|dati|account|utente|user|personal)|portabil\w*|right.?to.?(erasure|access)|"
                           r"isActive\s*:\s*false|deletedAt\s*:\s*new Date|anonimi[sz]\w*|pseudonim\w*)"),
