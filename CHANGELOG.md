@@ -3,6 +3,8 @@
 Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/); versioni secondo [SemVer](https://semver.org/lang/it/).
 
 ## [Non rilasciato]
+### Cambiato
+- `check_delivery.py` e `checklist.py` allineati ad appsec-sentinel (controllo dei problemi annotati nella checklist e non diventati finding; non si applica alla matrice A–N).
 
 ## [1.2.0] - 2026-11-01
 ### Aggiunto (dopo due giri reali sul gestionale B: 39 cause, 18 in comune, accordo 46%)
