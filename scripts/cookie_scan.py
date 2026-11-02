@@ -37,6 +37,29 @@ KNOWN = {
 }
 
 
+# stesso host per servizi diversi: si distingue dal percorso (www.google.com serve reCAPTCHA e Maps)
+PATH_KNOWN = [("google.com/recaptcha", "anti-bot (Google reCAPTCHA)"), ("gstatic.com/recaptcha", "anti-bot (Google reCAPTCHA)"),
+              ("google.com/maps", "mappe (dati verso Google)"), ("googleapis.com/maps", "mappe (dati verso Google)"),
+              ("youtube.com/embed", "video (cookie di terzi)")]
+SESSION_NAMES = ("phpsessid", "sessionid", "jsessionid", "connect.sid", "asp.net_sessionid", "laravel_session", "next-auth.session-token",
+                 "__secure-next-auth.session-token", "authjs.session-token", "sid", "csrftoken", "xsrf-token", "__host-")
+
+
+def classify_url(host, path):
+    hp = f"{host}{path}"
+    return next((c for k, c in PATH_KNOWN if k in hp), None)
+
+
+def cookie_class(c, site):
+    dom = c["dominio"].lstrip(".")
+    if site and not (dom == site or site.endswith("." + dom) or dom.endswith("." + site)):
+        return "di terze parti (non tecnico: verificare il consenso)"
+    n = c["nome"].lower()
+    if any(n == x or n.startswith(x) for x in SESSION_NAMES):
+        return "sessione o sicurezza (probabilmente tecnico)"
+    return "da classificare (tecnico o no?)"
+
+
 def is_local(host):
     h = (host or "").lower()
     return h in ("localhost", "127.0.0.1", "::1") or h.endswith((".localhost", ".test"))
@@ -56,6 +79,8 @@ def main():
     ap.add_argument("--out", type=Path, default=Path("."))
     ap.add_argument("--autorizzato", action="store_true")
     ap.add_argument("--wait", type=float, default=4.0)
+    ap.add_argument("--blocca-terzi", action="store_true",
+                    help="registra le richieste verso terzi ma non le invia: nessun dato esce, e il risultato non dipende dalla rete")
     a = ap.parse_args()
     for u in a.urls:
         host = urlparse(u).hostname
@@ -74,7 +99,15 @@ def main():
             ctx = br.new_context()
             page = ctx.new_page()
             reqs = []
-            page.on("request", lambda r: reqs.append((urlparse(r.url).hostname or "", r.resource_type)))
+            page.on("request", lambda r: reqs.append((urlparse(r.url).hostname or "", r.resource_type, urlparse(r.url).path)))
+            if a.blocca_terzi:
+                def _route(route, *_):
+                    h = urlparse(route.request.url).hostname or ""
+                    if h and h != site and not h.endswith("." + (site or "")) and not is_local(h):
+                        reqs.append((h, route.request.resource_type, urlparse(route.request.url).path))
+                        return route.abort()
+                    return route.continue_()
+                ctx.route("**/*", _route)
             status = ""
             try:
                 resp = page.goto(u, wait_until="load", timeout=25000)
@@ -89,11 +122,16 @@ def main():
                 ss = page.evaluate("Object.keys(sessionStorage)")
             except Exception:
                 ls, ss = [], []
-            third = {}
-            for h, t in reqs:
+            third, pclass = {}, {}
+            for h, t, path in reqs:
                 if h and h != site and not h.endswith("." + (site or "")):
                     third.setdefault(h, set()).add(t)
-            tp = [{"dominio": h, "tipi": sorted(t), "classe": classify(h)} for h, t in sorted(third.items())]
+                    pc = classify_url(h, path)
+                    if pc:
+                        pclass.setdefault(h, set()).add(pc)
+            tp = [{"dominio": h, "tipi": sorted(t), "classe": " · ".join(sorted(pclass[h])) if h in pclass else classify(h)} for h, t in sorted(third.items())]
+            for c in cookies:
+                c["classe"] = cookie_class(c, site)
             report.append({"url": u, "status": status, "cookie": cookies, "localStorage": ls, "sessionStorage": ss, "terze_parti": tp})
             br.close()
     (a.out / "cookie-scan.json").write_text(json.dumps(report, ensure_ascii=False, indent=1), encoding="utf-8")
@@ -102,13 +140,15 @@ def main():
         w.writerow(["url", "tipo", "nome_o_dominio", "dettaglio", "classe"])
         for r in report:
             for c in r["cookie"]:
-                w.writerow([r["url"], "cookie", c["nome"], f"{c['dominio']} · scadenza {c['scadenza']} · secure={c['secure']} httpOnly={c['httpOnly']}", "da classificare (tecnico o no?)"])
+                w.writerow([r["url"], "cookie", c["nome"], f"{c['dominio']} · scadenza {c['scadenza']} · secure={c['secure']} httpOnly={c['httpOnly']}", c.get("classe", "da classificare")])
             for k in r["localStorage"] + r["sessionStorage"]:
                 w.writerow([r["url"], "storage", k, "chiave di storage del browser", "da classificare"])
             for t in r["terze_parti"]:
                 w.writerow([r["url"], "terza parte", t["dominio"], ", ".join(t["tipi"]), t["classe"]])
     for r in report:
         print(f"{r['url']}  stato {r['status']}  cookie {len(r['cookie'])}  storage {len(r['localStorage']) + len(r['sessionStorage'])}  domini di terzi {len(r['terze_parti'])}")
+        for c in r["cookie"]:
+            print(f"  cookie: {c['nome']:30} {c['dominio']:20} {c['classe']}")
         for t in r["terze_parti"]:
             print(f"  terza parte: {t['dominio']:32} {t['classe']}")
     print(f"scritto: {a.out}/cookie-scan.json e .csv. Valori dei cookie non salvati. Confrontali con informativa e banner.")

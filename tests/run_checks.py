@@ -422,5 +422,30 @@ if have("merge_audits.py"):
     check("unione: intervalli che si sovrappongono nello stesso file contano come citazione vicina, intervalli lontani no",
           any("sovrapposte" in w for w in _ma.similarity(fa_, fb_)[1]) and not any("sovrapposte" in w for w in _ma.similarity(fa_, fc_)[1]))
 
+import shutil as _shc
+try:
+    import playwright  # noqa: F401
+    _pw = True
+except ImportError:
+    _pw = False
+if have("cookie_scan.py") and _shc.which("php") and _pw and SBP.exists():
+    import socket, time as _t
+    _s = socket.socket(); _s.bind(("127.0.0.1", 0)); _port = _s.getsockname()[1]; _s.close()
+    _srv = subprocess.Popen(["php", "-S", f"127.0.0.1:{_port}", "-t", str(papp / "public")], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    try:
+        _t.sleep(1.0)
+        cso = tmp / "cookie-scan"
+        u = f"http://127.0.0.1:{_port}/"
+        rcs = run("cookie_scan.py", u + "index.php", u + "contatti.php", u + "eventi.php", "--out", cso, "--wait", "2", "--blocca-terzi")
+        rep = {r["url"].rsplit("/", 1)[-1]: r for r in json.loads((cso / "cookie-scan.json").read_text(encoding="utf-8"))}
+        cls = lambda pg: " ".join(t["classe"] for t in rep[pg]["terze_parti"])
+        check("cookie_scan sul sito della scuola (PHP locale, terzi bloccati): YouTube, reCAPTCHA e font in home, Maps nei contatti; "
+              "nessun YouTube negli eventi (caricato solo al clic), Matomo locale non è terza parte, PHPSESSID tecnico",
+              "video" in cls("index.php") and "reCAPTCHA" in cls("index.php") and "font" in cls("index.php") and "mappe" in cls("contatti.php")
+              and "video" not in cls("eventi.php") and not any("statistiche" in t["dominio"] for r in rep.values() for t in r["terze_parti"])
+              and all("tecnico" in c["classe"] for r in rep.values() for c in r["cookie"]), rcs.stdout[-600:])
+    finally:
+        _srv.terminate()
+
 print(f"\nriusciti: {ok}  falliti: {fail}")
 sys.exit(1 if fail else 0)

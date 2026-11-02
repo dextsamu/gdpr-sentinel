@@ -29,8 +29,9 @@ Cosa è fatto, cosa viene dopo e perché. Le priorità vengono dalle misure (ban
 
 ## Dopo
 
-- **`cookie_scan.py` su un sito reale autorizzato per iscritto** (oggi provato solo su una pagina locale).
-- **Diritti degli interessati su istanza autorizzata**: esportazione e cancellazione provate con account sintetici, con gli stessi limiti dei test dinamici di appsec-sentinel.
+- **`cookie_scan.py` su un sito reale autorizzato per iscritto.** Provato il 02/11/2026 sul sito della scuola servito in locale (risultato atteso su tutte le pagine, esche comprese); manca un sito pubblico vero con il consenso del titolare.
+- **Diritti degli interessati su istanza autorizzata**: esportazione e cancellazione provate con account sintetici, con gli stessi limiti dei test dinamici di appsec-sentinel. Serve un banco con database in esecuzione (il portale soci del primo banco, con PostgreSQL).
+- **Gap che raggruppano più cause**: un controllo automatico basato su titolo e numero di file citati è stato provato (02/11/2026) e scartato, perché segnalava allo stesso modo i giri ben separati e quelli raggruppati. Serve un criterio migliore.
 - **Registro art. 30 sulle app grandi**: raggruppare automaticamente le righe della bozza per finalità, che oggi vanno raggruppate a mano.
 - **Trasferimenti e adesioni al DPF**: verifica guidata quando il mandato consente la rete, con data della verifica nel report.
 

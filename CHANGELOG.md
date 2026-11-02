@@ -3,6 +3,10 @@
 Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/); versioni secondo [SemVer](https://semver.org/lang/it/).
 
 ## [Non rilasciato]
+### Aggiunto (prova dinamica)
+- **`cookie_scan.py` provato su un sito in funzione**: il sito della scuola (`tests/bench-pa`) servito in locale con PHP. Prima di ogni interazione rileva in home YouTube, reCAPTCHA e Google Fonts, nei contatti anche Google Maps; nella pagina eventi nessun YouTube (il video si carica solo al clic, l'esca); Matomo sul server della scuola non è una terza parte; `PHPSESSID` è riconosciuto come cookie di sessione. Senza blocco, YouTube imposta quattro cookie sul suo dominio, classificati «di terze parti».
+- `cookie_scan.py`: classificazione dal percorso quando lo stesso host serve servizi diversi (`www.google.com/recaptcha` e `/maps`); classe dei cookie (di terze parti, sessione o sicurezza, da classificare); opzione `--blocca-terzi`, che registra le richieste verso terzi senza inviarle (nessun dato esce, risultato indipendente dalla rete). Test automatico in `tests/run_checks.py` quando PHP e Playwright sono disponibili.
+
 ### Misurato (Juice Shop con altri agenti)
 - `appsec-sentinel rapido` su Juice Shop, stesso prompt: Codex 18/32 (vicino 22), Antigravity 6/32 (vicino 9), Claude 19–23/32. Tabella in `docs/ALTRI-AGENTI.md`.
 
