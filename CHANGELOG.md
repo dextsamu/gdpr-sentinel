@@ -4,6 +4,10 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/); v
 
 ## [Non rilasciato]
 
+## [1.3.2] - 2026-11-02
+### Misurato
+- **Codex**: `appsec-sentinel rapido` sul banco Django, 11/11 difetti (6/6 alti), 0 falsi allarmi, smentita con un sottoagente indipendente (3 resistono, 1 declassato), `chiudi` senza falliti. Con Antigravity (10/11) le due skill sono ora misurate su Claude, Codex e Antigravity.
+
 ## [1.3.1] - 2026-11-01
 ### Misurato
 - **Antigravity e Codex**: `gdpr-sentinel statica` sul secondo banco privacy, stesso prompt: 14/15 difetti e 0 falsi allarmi per entrambi, smentita indipendente fatta in entrambi i casi (Antigravity con il pacchetto in una sessione nuova, Codex con un sottoagente). Tabella in `docs/ALTRI-AGENTI.md`. Corretta l'esca T02 del banco (si attivava su «preventiva»).
