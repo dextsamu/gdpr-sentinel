@@ -25,7 +25,8 @@ Cosa è fatto, cosa viene dopo e perché. Le priorità vengono dalle misure (ban
 ## Prossimo
 
 1. **Accordo fra due giri su un repository grande.** Con la 1.4.2 le due matrici rendono stabile la parte strutturata (entità 98%, informativa 81%) e le cause gravi (82%); l'accordo sull'insieme dei gap resta intorno al 60% perché le cause fuori matrice (ruoli e accessi interni, procedure, dettagli dei documenti) cambiano da un giro all'altro. Per un cliente resta `doppio`; un'eventuale terza matrice per ruoli e accessi (chi vede cosa) è il prossimo candidato.
-2. **Rilascio successivo** insieme ad appsec-sentinel.
+2. **Terza matrice: ruoli e accessi (`accessi.csv`).** Dove stanno quasi tutte le cause che due giri vedono in modo diverso dopo la 1.4.2: chi vede cosa. Il pre-passaggio elenca i ruoli dal codice (enum o costanti dei ruoli, flag sull'utente) e, per ogni entità con dati personali di `entita.csv`, le route che la leggono con il controllo di ruolo trovato vicino (file e riga); le domande fisse per ogni coppia ruolo × entità: può leggerla? solo i propri dati, quelli del proprio gruppo o settore, o tutti? è coerente con informativa, DPIA e accordi (per esempio dati sanitari ai soli responsabili del settore, GPS escluso ai responsabili)? Stesse regole di chiusura delle altre matrici, un gap per coppia ruolo × categoria di dati. Misura come per le altre: due giri su UnityKore, accordo cella per cella, cause gravi e token; obiettivo oltre l'80% sulla nuova matrice senza superare circa 350 mila token per giro.
+3. **Rilascio successivo** insieme ad appsec-sentinel.
 
 ## Dopo
 
