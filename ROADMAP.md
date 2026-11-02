@@ -24,7 +24,7 @@ Cosa è fatto, cosa viene dopo e perché. Le priorità vengono dalle misure (ban
 
 ## Prossimo
 
-1. **Accordo fra due giri su un repository grande.** Con la 1.4.1 i due giri danno lo stesso giudizio sul 91% delle righe aperte di `entita.csv` (cancellazione 28/28, isolamento 37/40, export 11/12, oblio 14/19), con un costo per giro simile a prima. Restano variabili il diritto all'oblio sulle tabelle collegate solo indirettamente all'utente e i temi fuori matrice (documenti, consensi, fornitori: accordo sui gap 62%). Prossimo passo possibile: una seconda griglia per i temi documentali (informativa contro codice, voce per voce).
+1. **Accordo fra due giri su un repository grande.** Con la 1.4.2 le due matrici rendono stabile la parte strutturata (entità 98%, informativa 81%) e le cause gravi (82%); l'accordo sull'insieme dei gap resta intorno al 60% perché le cause fuori matrice (ruoli e accessi interni, procedure, dettagli dei documenti) cambiano da un giro all'altro. Per un cliente resta `doppio`; un'eventuale terza matrice per ruoli e accessi (chi vede cosa) è il prossimo candidato.
 2. **Rilascio successivo** insieme ad appsec-sentinel.
 
 ## Dopo

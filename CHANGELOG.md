@@ -4,6 +4,15 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/); v
 
 ## [Non rilasciato]
 
+## [1.4.2] - 2026-11-02
+### Aggiunto
+- **Matrice dell'informativa** (`scripts/notice_matrix.py`, lanciato dal pre-passaggio, scrive `informativa.csv`): le informative del repository (pagine, documenti, seed del testo; esclusi i documenti interni di progetto) confrontate con il codice voce per voce. Una riga per ogni fornitore e risorsa di terzi trovati nel codice (il nome compare?), più titolare, DPO, basi giuridiche, trasferimenti, tempi, diritti, dati particolari e geolocalizzazione se trattati, numero di versioni; segnala da sola le contraddizioni evidenti («non trasferiamo fuori dall'UE» con fornitori extra-SEE, «non trattiamo dati sanitari» con dati sanitari nel codice). Stesse regole di chiusura di `entita.csv`. Sul sito della scuola trova da sola DPO assente, trasferimenti negati, dati sanitari negati e i sei fornitori non nominati.
+- `draft_ropa.py`: Telegram (API e librerie dei bot) e servizi di geolocalizzazione degli IP (ip-api.com, ipinfo.io).
+- `merge_audits.py` (condiviso): accordo cella per cella anche sulla matrice dell'informativa.
+
+### Misurato (UnityKore, due giri)
+- Matrice per entità: stesso giudizio su **100/102** righe aperte (98%; cancellazione 31/31, export 12/12, isolamento 39/40, oblio 18/19). Matrice dell'informativa: **17/21** (81%). Accordo sui gap 59%, sulle cause ad alta priorità **82%** (9/11). Token per giro 318–319 mila (prima 263–311 mila). Le cause viste da un giro solo stanno ora fuori da entrambe le matrici (ruoli dei responsabili, procedura incidenti, header fidati del middleware, data dell'informativa).
+
 ## [1.4.1] - 2026-11-02
 ### Cambiato (matrice per entità più stabile)
 - Definizioni fisse in SKILL.md per le quattro domande e pre-compilazioni nuove in `entity_matrix.py`, scelte guardando dove due giri discordavano: registri tenuti per obbligo di legge o difesa → oblio «n/a probabile» (art. 17(3)), con il termine nella riga cancellazione; credenziali e token → export «n/a probabile»; modelli Prisma cancellati a cascata con l'utente → cancellazione «si (solo a cascata)»; per l'isolamento tramite relazione, le letture di elenco nelle API elencate con file e riga, da chiudere tutte (`non verificabile` non è più ammesso se ce ne sono; un `gap` richiede il `file:riga` in `note`).

@@ -31,7 +31,8 @@ SUPPLIERS = {
     "openai": ("OpenAI", "intelligenza artificiale", "testi inviati al modello"), "@anthropic-ai": ("Anthropic", "intelligenza artificiale", "testi inviati al modello"),
     "next-auth": ("Provider OAuth configurati", "autenticazione", "identificativi e profilo"), "@auth/": ("Provider OAuth configurati", "autenticazione", "identificativi e profilo"),
     "@vercel": ("Vercel", "hosting/analytics", "log, metriche"), "cloudinary": ("Cloudinary", "media", "immagini"), "algolia": ("Algolia", "ricerca", "query, contenuti indicizzati"),
-    "mailchimp": ("Mailchimp", "email marketing", "email, profilo"), "@hubspot": ("HubSpot", "CRM/marketing", "contatti"), "intercom": ("Intercom", "chat", "messaggi, identificativi"),
+    "mailchimp": ("Mailchimp", "email marketing", "email, profilo"), "node-telegram-bot-api": ("Telegram", "messaggistica (bot)", "contenuto dei messaggi"),
+    "telegraf": ("Telegram", "messaggistica (bot)", "contenuto dei messaggi"), "@hubspot": ("HubSpot", "CRM/marketing", "contatti"), "intercom": ("Intercom", "chat", "messaggi, identificativi"),
 }
 HOST_CLASS = {"fonts.googleapis.com": ("Google Fonts", "font di terzi", "indirizzo IP del visitatore"), "fonts.gstatic.com": ("Google Fonts", "font di terzi", "indirizzo IP del visitatore"),
               "googletagmanager.com": ("Google Tag Manager", "tag manager", "IP, identificativi"), "google-analytics.com": ("Google Analytics", "analytics", "IP, identificativi, eventi"),
@@ -43,6 +44,8 @@ HOST_CLASS = {"fonts.googleapis.com": ("Google Fonts", "font di terzi", "indiriz
               "brevo.com": ("Brevo", "email marketing", "email, profilo"), "sendinblue.com": ("Brevo", "email marketing", "email, profilo"),
               "mailgun.net": ("Mailgun", "invio email", "email, contenuto dei messaggi"), "api.sendgrid.com": ("SendGrid", "invio email", "email, contenuto"),
               "youtube-nocookie.com": ("YouTube (modalità senza cookie)", "video incorporati", "IP"), "player.vimeo.com": ("Vimeo", "video incorporati", "IP, cookie"),
+              "api.telegram.org": ("Telegram", "messaggistica (bot)", "contenuto dei messaggi, identificativi"),
+              "ip-api.com": ("ip-api.com", "geolocalizzazione degli IP", "indirizzi IP"), "ipinfo.io": ("ipinfo.io", "geolocalizzazione degli IP", "indirizzi IP"),
               "hcaptcha.com": ("hCaptcha", "anti-bot", "IP, dati del browser"), "challenges.cloudflare.com": ("Cloudflare Turnstile", "anti-bot", "IP, dati del browser")}
 # servizi riconoscibili solo dal percorso (stesso host www.google.com)
 PATH_CLASS = [(r"(www\.)?google\.com/recaptcha|gstatic\.com/recaptcha", ("Google reCAPTCHA", "anti-bot", "IP, dati del browser e di navigazione")),

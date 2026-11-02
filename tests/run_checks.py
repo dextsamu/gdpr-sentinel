@@ -473,5 +473,14 @@ if have("merge_audits.py") and have("entity_matrix.py"):
     check("unione: accordo cella per cella sulla matrice per entità (1 su 2 righe aperte) ed entita.csv unita con la provenienza",
           "stesso giudizio (gap o no) su 1/2" in rm_.stdout and "gap per B" in uni, rm_.stdout[-400:])
 
+if have("notice_matrix.py") and SBP.exists():
+    nm = (pw / "informativa.csv")
+    if not nm.exists():
+        run("notice_matrix.py", papp, "--audit", pw)
+    im_ = {r["voce"]: r["prepass"] for r in csv.DictReader(nm.open(encoding="utf-8"))}
+    check("matrice dell'informativa (scuola): DPO assente, trasferimenti esclusi ma Mailgun e Google nel codice, dati sanitari esclusi ma trattati, Mailgun non nominato",
+          im_.get("DPO / RPD", "").startswith("non trovato") and "esclude i trasferimenti" in im_.get("trasferimenti extra-SEE", "")
+          and "esclude i dati particolari" in im_.get("dati particolari (art. 9)", "") and im_.get("destinatario: Mailgun", "").startswith("non trovato"), str(im_)[:500])
+
 print(f"\nriusciti: {ok}  falliti: {fail}")
 sys.exit(1 if fail else 0)
