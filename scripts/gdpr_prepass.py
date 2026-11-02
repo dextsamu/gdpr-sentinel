@@ -104,6 +104,21 @@ def main():
     if forn:
         out_lines += [f"## fornitori: {len(forn)}"] + (fr[:40] or ["package.json"])
         cats.append(("fornitori", len(forn)))
+    # Temi documentali, sempre presenti anche senza indizi nel codice: nei giri reali sullo stesso gestionale le cause
+    # viste da un giro solo erano soprattutto qui (informativa, registro e DPIA, data breach, segreti versionati).
+    docs = [x["file"] for x in g("documenti")]
+    def pick(rx):
+        return [f for f in docs if re.search(rx, f, re.I)]
+    tracked = subprocess.run(["git", "-C", str(repo), "ls-files"], capture_output=True, text=True).stdout.splitlines() if (repo / ".git").exists() else \
+        [str(q.relative_to(repo)).replace("\\", "/") for q in repo.rglob(".env*") if q.is_file()]   # con Git: solo i file versionati
+    envs = sorted(f for f in tracked if re.search(r"(^|/)\.env(\.[\w.-]+)?$", f) and not re.search(r"(example|sample|template|dist)$", f, re.I)
+                  and "node_modules/" not in f)
+    for nome, fl in (("informativa e trasparenza (D): titolare, DPO, basi, destinatari, trasferimenti, tempi, diritti", pick(r"privacy|informativ|policy|cookie")),
+                     ("governance (K): registro dei trattamenti, DPIA, nomine, accordi art. 28", pick(r"dpia|registro|ropa|nomin|dpa|accordo|art\.?_?28|governance")),
+                     ("data breach (L): procedura, registro delle violazioni, log per ricostruire", pick(r"breach|violazion|incident")),
+                     ("segreti e configurazioni versionate (art. 32)", envs)):
+        out_lines += [f"## {nome}: {len(fl)}"] + fl[:40]
+        cats.append((nome, len(fl)))
     (reg / "punti-pericolosi.txt").write_text("\n".join(out_lines) + "\n", encoding="utf-8")
     punti.write(audit, cats)
 

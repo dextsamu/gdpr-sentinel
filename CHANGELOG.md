@@ -3,6 +3,12 @@
 Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/); versioni secondo [SemVer](https://semver.org/lang/it/).
 
 ## [Non rilasciato]
+### Aggiunto
+- `punti-pericolosi.csv` comprende sempre quattro temi documentali, anche senza indizi nel codice: informativa e trasparenza (D), governance (K: registro, DPIA, nomine, accordi art. 28), data breach (L), segreti e configurazioni versionate (solo i file tracciati da Git).
+- `merge_audits.py` (condiviso): due gap che citano lo stesso file a meno di 3 righe di distanza contano come citazione vicina (+0,4), perché due giri citano spesso la stessa istruzione con un numero di riga diverso. Rimisurando i giri esistenti: UnityKore 59→65%, 63→67%, 44→56%, 46→50%; appsec invariato (Juice 75%, Django 88%, Laravel 94%). Le unioni nuove sono state lette a mano.
+
+### Misurato
+- **Accordo su UnityKore con tutte le modifiche, due giri nuovi: 56%** (31 e 33 gap, `chiudi` senza falliti, 13 categorie chiuse in entrambi). Nessun miglioramento oltre la variabilità fra coppie di giri (56–67%): l'obiettivo «oltre il 70%» non è raggiungibile così su un repository di oltre mille file, e la skill continua a indicare `doppio` per le app grandi. Dettagli in ROADMAP.
 
 ## [1.3.2] - 2026-11-02
 ### Misurato

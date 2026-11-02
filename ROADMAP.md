@@ -24,7 +24,7 @@ Cosa è fatto, cosa viene dopo e perché. Le priorità vengono dalle misure (ban
 
 ## Prossimo
 
-1. **Accordo oltre il 70%** sui repository grandi. Provato il 01/11/2026 con `punti-pericolosi.csv`: 59% (prima 63%), cioè nessun effetto misurabile; le differenze stanno nei temi documentali (governance, data breach, ruolo del DPO, segreti versionati). Prossimo tentativo: domande minime documentali numerate per i controlli D, K, L, chiuse una per una come le categorie, e abbinamento nell'unione dei gap con le stesse righe di codice citate anche se descritti in modo diverso.
+1. **Accordo fra due giri su un repository grande: misurare, non inseguire.** Tre tentativi il 01–02/11/2026 su UnityKore (categorie di indizi dal codice, poi anche temi documentali D/K/L e segreti versionati; abbinamento delle citazioni a meno di 3 righe nell'unione): 59%, 65% rimisurando gli stessi giri con l'abbinamento nuovo, 56% su due giri nuovi. L'accordo resta fra 56 e 67%: su 1074 file ogni giro ne legge a fondo circa 45, e le cause viste da un giro solo cambiano da una coppia di giri all'altra. La risposta già nella skill è `doppio` (due giri e l'unione: un giro solo vede circa due terzi delle cause dell'unione). Prossimo passo, se serve: un elenco fisso dei file da leggere a fondo, scelto dal pre-passaggio, uguale per tutti i giri.
 2. **Rilascio successivo** insieme ad appsec-sentinel.
 
 ## Dopo
