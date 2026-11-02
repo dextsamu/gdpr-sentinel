@@ -460,5 +460,18 @@ if have("entity_matrix.py") and SBP.exists():
     r_e = run("check_delivery.py", ew)
     check("chiudi (gdpr): righe «non trovato» della matrice per entità senza esito fanno fallire", "FAIL matrice per entità" in r_e.stdout, r_e.stdout[-400:])
 
+if have("merge_audits.py") and have("entity_matrix.py"):
+    mA, mB = tmp / "mat-A", tmp / "mat-B"
+    for d, es in ((mA, ("gap", "ok")), (mB, ("gap", "gap"))):
+        d.mkdir()
+        (d / "gaps.csv").write_text("id,controllo,titolo,riferimenti,stato,priorita,rischio_interessati,norma,domanda_id,smentita\n"
+                                    "GDPR-001,G,Nessuna cancellazione per Lead,src/a.ts:1,confermato da codice/config,media,,,,\n", encoding="utf-8")
+        (d / "entita.csv").write_text("entita,dati,fonte,domanda,prepass,esito,gap_id,note\n"
+                                      f"Lead,x,s,cancellazione,non trovato,{es[0]},GDPR-001,\nLead,x,s,export,non trovato,{es[1]},,\nUser,x,s,export,si: a.ts:1,,,\n", encoding="utf-8")
+    rm_ = run("merge_audits.py", mA, mB, "--etichette", "A,B", "--out", tmp / "mat-U")
+    uni = (tmp / "mat-U" / "entita.csv").read_text(encoding="utf-8")
+    check("unione: accordo cella per cella sulla matrice per entità (1 su 2 righe aperte) ed entita.csv unita con la provenienza",
+          "stesso giudizio (gap o no) su 1/2" in rm_.stdout and "gap per B" in uni, rm_.stdout[-400:])
+
 print(f"\nriusciti: {ok}  falliti: {fail}")
 sys.exit(1 if fail else 0)

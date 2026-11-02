@@ -43,6 +43,12 @@ EXPORT_PATH = re.compile(r"(gdpr|privacy|personal|account|profil\w*|/me/|my-?dat
                          r"(data-?export|esporta-?dati|portabil|my-?data|miei-?dati)", re.I)
 ERASE_PATH = re.compile(r"(delete-?account|account-?deletion|erasure|oblio|cancella\w*-?account|right-to-be-forgotten|elimina-?account|me/delete|account/delete)", re.I)
 USER_LINK = re.compile(r"^(user|utente|member|socio|dipendente|volontario|person|persona|customer|cliente|iscritto|alunno|patient|paziente)_?id$|^email$", re.I)
+# Dove due giri discordavano di più (02/11/2026): registri che si conservano per obbligo di legge o difesa (art. 17(3)),
+# trattati da un giro come gap di oblio e dall'altro come eccezione; credenziali tecniche nell'export. Qui la risposta
+# probabile è pre-compilata («n/a probabile») e il problema del termine resta nella riga «cancellazione».
+LEGAL = re.compile(r"(timbratur|presenz|attendance|audit|consens|consent|fattur|invoice|contratt|straordinar|assenz|ferie|"
+                   r"bancaore|banca_?ore|movimentobanca|reperibilit|indennizz|payroll|cedolin|bustapaga|mancatatimbratura|log$)", re.I)
+TECH = re.compile(r"(credential|token|otp|session|webauthn|passkey|recovery|subscription|apikey|api_key|secret)", re.I)
 API_PATH = re.compile(r"(^|/)(api|routes?|views?|controllers?|handlers?|pages/api|app/api)(/|\.)", re.I)
 
 
@@ -107,6 +113,18 @@ def main():
         rx = re.compile(rf"\b{re.escape(acc)}\b|\b{re.escape(name)}\b")
         return [f"{f}:{n}" for f in flist for n, line in enumerate(texts.get(f, []), 1) if rx.search(line)][:3]
 
+    # Prisma: modelli cancellati a cascata con l'utente (relation ... onDelete: Cascade verso il modello utente)
+    cascade = {}
+    for sp in repo.rglob("*.prisma"):
+        if set(sp.relative_to(repo).parts) & SKIP:
+            continue
+        cur = None
+        for n, line in enumerate(sp.read_text(encoding="utf-8", errors="replace").splitlines(), 1):
+            m = re.match(r"\s*model\s+(\w+)\s*\{", line)
+            if m:
+                cur = m.group(1)
+            elif cur and re.search(r"\b(User|Utente|Member|Socio|Dipendente|Person|Persona|Customer|Cliente)\b\s+@relation\([^)]*onDelete:\s*Cascade", line):
+                cascade[cur] = f"{sp.relative_to(repo).as_posix()}:{n}"
     rows = []
     for name, fields, src, kind, groups in models:
         dati = ", ".join(groups)
@@ -114,7 +132,12 @@ def main():
         anon = [r for r in refs_for(name, kind, "update|updateMany") if any(k in " ".join(texts[r.rsplit(":", 1)[0]]).lower()
                                                                              for k in ("anonimi", "anonymi", "redact", "gdpr", "retention"))]
         canc = dele + [r for r in anon if r not in dele]
-        rows.append([name, dati, src, "cancellazione", ("si: " + "; ".join(canc[:3])) if canc else "non trovato"])
+        if canc:
+            rows.append([name, dati, src, "cancellazione", "si: " + "; ".join(canc[:3])])
+        elif name in cascade:   # vive quanto l'account: la scadenza coincide con la cancellazione dell'utente
+            rows.append([name, dati, src, "cancellazione", f"si (solo a cascata con l'utente: {cascade[name]}); gap solo se i documenti promettono un termine più breve"])
+        else:
+            rows.append([name, dati, src, "cancellazione", "non trovato"])
         personale = name.lower() in ("user", "users", "utente", "utenti", "member", "socio", "soci", "dipendente", "persona", "customer", "cliente") \
             or any(USER_LINK.match(f) for f in fields)
         if not personale:   # export e oblio riguardano i dati legati a una persona che può chiederli
@@ -122,15 +145,28 @@ def main():
             rows.append([name, dati, src, "diritto_oblio", "n/a (nessun legame con un interessato nel modello)"])
         exp = mentions(name, kind, export_files) if personale else None
         if personale:
-            rows.append([name, dati, src, "export", ("si: " + "; ".join(exp)) if exp else ("non trovato" if export_files else "non trovato (nessuna esportazione nel codice)")])
+            if exp:
+                rows.append([name, dati, src, "export", "si: " + "; ".join(exp)])
+            elif TECH.search(name):
+                rows.append([name, dati, src, "export", "n/a probabile: credenziale o token tecnico, di norma escluso dall'esportazione (verificare)"])
+            else:
+                rows.append([name, dati, src, "export", "non trovato" if export_files else "non trovato (nessuna esportazione nel codice)"])
             era = mentions(name, kind, erase_files)
-            rows.append([name, dati, src, "diritto_oblio", ("si: " + "; ".join(era)) if era else ("non trovato" if erase_files else "non trovato (nessuna cancellazione su richiesta nel codice)")])
+            if era:
+                rows.append([name, dati, src, "diritto_oblio", "si: " + "; ".join(era)])
+            elif LEGAL.search(name):
+                rows.append([name, dati, src, "diritto_oblio", "n/a probabile: registro conservato per obbligo di legge o difesa (art. 17(3)); "
+                             "il termine di conservazione va verificato nella riga «cancellazione»"])
+            else:
+                rows.append([name, dati, src, "diritto_oblio", "non trovato" if erase_files else "non trovato (nessuna cancellazione su richiesta nel codice)"])
         if multi:
             tf = next((f for f in fields if TENANT.match(f)), None)
             if not tf and not personale:
                 rows.append([name, dati, src, "isolamento", "n/a (né campo di ente né legame con un interessato)"])
             elif not tf:
-                rows.append([name, dati, src, "isolamento", "non trovato (nessun campo di ente: l'isolamento passa da una relazione, da verificare nelle letture)"])
+                reads = refs_for(name, kind, "findMany|findFirst|count|aggregate|groupBy" if kind == "prisma" else "filter|all", api_only=True)
+                rows.append([name, dati, src, "isolamento", "non trovato (nessun campo di ente: l'isolamento passa da una relazione; letture di elenco nelle API: "
+                             + (f"{len(reads)}: {'; '.join(reads[:4])}" if reads else "0") + ")"])
             else:
                 reads = refs_for(name, kind, "findMany|findFirst|count|aggregate|groupBy" if kind == "prisma" else "filter|all", api_only=True)
                 senza = []

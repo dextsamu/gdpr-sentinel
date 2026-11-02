@@ -24,7 +24,7 @@ Cosa è fatto, cosa viene dopo e perché. Le priorità vengono dalle misure (ban
 
 ## Prossimo
 
-1. **Accordo fra due giri su un repository grande.** Dal 1.4.0 le domande strutturate (cancellazione, export, oblio, isolamento per ogni entità) sono in `entita.csv`, pre-compilate: i due giri concordano sul 79% delle righe aperte e costano meno token. Restano variabili i temi fuori matrice (documenti, consensi, fornitori) e il raggruppamento in gap (49% complessivo). Prossimi passi possibili: regole più strette per oblio e isolamento, dove i giri discordano di più, e un confronto dell'unione sulle righe di `entita.csv` oltre che sui gap; per un cliente resta `doppio`.
+1. **Accordo fra due giri su un repository grande.** Con la 1.4.1 i due giri danno lo stesso giudizio sul 91% delle righe aperte di `entita.csv` (cancellazione 28/28, isolamento 37/40, export 11/12, oblio 14/19), con un costo per giro simile a prima. Restano variabili il diritto all'oblio sulle tabelle collegate solo indirettamente all'utente e i temi fuori matrice (documenti, consensi, fornitori: accordo sui gap 62%). Prossimo passo possibile: una seconda griglia per i temi documentali (informativa contro codice, voce per voce).
 2. **Rilascio successivo** insieme ad appsec-sentinel.
 
 ## Dopo

@@ -4,6 +4,18 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/); v
 
 ## [Non rilasciato]
 
+## [1.4.1] - 2026-11-02
+### Cambiato (matrice per entità più stabile)
+- Definizioni fisse in SKILL.md per le quattro domande e pre-compilazioni nuove in `entity_matrix.py`, scelte guardando dove due giri discordavano: registri tenuti per obbligo di legge o difesa → oblio «n/a probabile» (art. 17(3)), con il termine nella riga cancellazione; credenziali e token → export «n/a probabile»; modelli Prisma cancellati a cascata con l'utente → cancellazione «si (solo a cascata)»; per l'isolamento tramite relazione, le letture di elenco nelle API elencate con file e riga, da chiudere tutte (`non verificabile` non è più ammesso se ce ne sono; un `gap` richiede il `file:riga` in `note`).
+- `merge_audits.py` (condiviso): con `entita.csv` in tutti i giri stampa l'accordo cella per cella sulle righe aperte, per domanda, e scrive l'`entita.csv` unita con la provenienza.
+
+### Misurato (UnityKore, due giri per versione)
+| Versione | Matrice: stesso giudizio | cancellazione | export | oblio | isolamento | Accordo sui gap | Cause alte | Token per giro |
+|---|---|---|---|---|---|---|---|---|
+| 1.4.0 | 79% (100/126) | 38/38 | 14/17 | 20/31 | 28/40 | 49% | 69% | 263–280 mila |
+| definizioni + oblio/export | 78% (86/110) | 27/38 | 11/12 | 19/20 | 29/40 | 58% | 67% | 288–305 mila |
+| **1.4.1** | **91% (90/99)** | **28/28** | **11/12** | **14/19** | **37/40** | **62%** | **75%** | **263–311 mila** |
+
 ## [1.4.0] - 2026-11-02
 ### Aggiunto
 - **Matrice per entità** (`scripts/entity_matrix.py`, lanciato dal pre-passaggio, scrive `entita.csv`): per ogni tabella o modello con dati personali (Prisma, Django, SQL) le stesse domande, pre-compilate dal codice con file e riga: cancellazione, export dell'interessato, diritto all'oblio e, se il codice è multi-ente, isolamento fra enti. L'agente chiude solo le righe «non trovato» (`ok`, `gap` con `gap_id`, `non applicabile`, `non verificabile` con motivo), con un gap per domanda che elenca le entità; `chiudi` fallisce sulle righe aperte. Su UnityKore: 63 entità, 252 righe, 126 da guardare. **Misurato con due giri**: sulle righe aperte i due giri danno lo stesso giudizio nel 79% dei casi (cancellazione 38/38, export 14/17, isolamento 28/40, oblio 20/31); token per giro 263–280 mila, contro 344–359 mila dei giri con `letture.csv`. L'accordo complessivo sui gap resta 49% (un giro ha raggruppato le entità in meno gap, l'altro le ha divise; i temi fuori dalla matrice restano variabili), 69% sulle cause ad alta priorità.
