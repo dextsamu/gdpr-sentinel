@@ -447,5 +447,18 @@ if have("cookie_scan.py") and _shc.which("php") and _pw and SBP.exists():
     finally:
         _srv.terminate()
 
+if have("entity_matrix.py") and SBP.exists():
+    emo = tmp / "entita-pa.csv"
+    run("entity_matrix.py", papp, "--out", emo)
+    em_ = {(r["entita"], r["domanda"]): r["prepass"] for r in csv.DictReader(emo.open(encoding="utf-8"))}
+    check("matrice per entità (PHP + SQL): contatti cancellati dal job notturno, iscrizioni no, nessuna esportazione nel codice",
+          em_.get(("contatti", "cancellazione"), "").startswith("si: cron/pulizia.php") and em_.get(("iscrizioni", "cancellazione"), "").startswith("non trovato")
+          and "nessuna esportazione" in em_.get(("contatti", "export"), ""), str(em_)[:400])
+    ew = tmp / "entita-audit"; ew.mkdir()
+    (ew / "entita.csv").write_text(emo.read_text(encoding="utf-8"), encoding="utf-8")
+    (ew / "gaps.csv").write_text("id,controllo,titolo,riferimenti,stato,priorita,rischio_interessati,norma,domanda_id,smentita\n", encoding="utf-8")
+    r_e = run("check_delivery.py", ew)
+    check("chiudi (gdpr): righe «non trovato» della matrice per entità senza esito fanno fallire", "FAIL matrice per entità" in r_e.stdout, r_e.stdout[-400:])
+
 print(f"\nriusciti: {ok}  falliti: {fail}")
 sys.exit(1 if fail else 0)

@@ -4,6 +4,13 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/); v
 
 ## [Non rilasciato]
 
+## [1.4.0] - 2026-11-02
+### Aggiunto
+- **Matrice per entità** (`scripts/entity_matrix.py`, lanciato dal pre-passaggio, scrive `entita.csv`): per ogni tabella o modello con dati personali (Prisma, Django, SQL) le stesse domande, pre-compilate dal codice con file e riga: cancellazione, export dell'interessato, diritto all'oblio e, se il codice è multi-ente, isolamento fra enti. L'agente chiude solo le righe «non trovato» (`ok`, `gap` con `gap_id`, `non applicabile`, `non verificabile` con motivo), con un gap per domanda che elenca le entità; `chiudi` fallisce sulle righe aperte. Su UnityKore: 63 entità, 252 righe, 126 da guardare. **Misurato con due giri**: sulle righe aperte i due giri danno lo stesso giudizio nel 79% dei casi (cancellazione 38/38, export 14/17, isolamento 28/40, oblio 20/31); token per giro 263–280 mila, contro 344–359 mila dei giri con `letture.csv`. L'accordo complessivo sui gap resta 49% (un giro ha raggruppato le entità in meno gap, l'altro le ha divise; i temi fuori dalla matrice restano variabili), 69% sulle cause ad alta priorità.
+
+### Rimosso
+- `letture.csv` (introdotto in questa stessa giornata): circa +30% di tempo senza effetto misurabile sull'accordo; la matrice per entità fissa le domande invece dei file.
+
 ## [1.3.3] - 2026-11-02
 ### Aggiunto (prova dinamica)
 - **`cookie_scan.py` provato su un sito in funzione**: il sito della scuola (`tests/bench-pa`) servito in locale con PHP. Prima di ogni interazione rileva in home YouTube, reCAPTCHA e Google Fonts, nei contatti anche Google Maps; nella pagina eventi nessun YouTube (il video si carica solo al clic, l'esca); Matomo sul server della scuola non è una terza parte; `PHPSESSID` è riconosciuto come cookie di sessione. Senza blocco, YouTube imposta quattro cookie sul suo dominio, classificati «di terze parti».

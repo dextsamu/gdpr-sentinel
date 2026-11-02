@@ -60,7 +60,8 @@ def main():
     reg.mkdir(exist_ok=True)
     log = [run("draft_ropa.py", repo, "--out", reg),
            run("retention_check.py", repo, "--out", reg / "retention-evidenze.csv"),
-           run("privacy_scan.py", repo, "--json", reg / "privacy-scan.json")]
+           run("privacy_scan.py", repo, "--json", reg / "privacy-scan.json"),
+           run("entity_matrix.py", repo, "--out", audit / "entita.csv")]
 
     def rows(p):
         return list(csv.DictReader(p.open(encoding="utf-8"))) if p.exists() else []
@@ -122,24 +123,8 @@ def main():
     (reg / "punti-pericolosi.txt").write_text("\n".join(out_lines) + "\n", encoding="utf-8")
     punti.write(audit, cats)
 
-    # Letture obbligatorie, uguali per ogni giro: su un repository di oltre mille file ogni giro ne leggeva a fondo
-    # circa 45 scegliendoli da sé, e le cause viste da un giro solo stavano in quelli. Ordine deterministico: file con
-    # indizi in più categorie, poi con più indizi; più i documenti privacy.
-    from collections import defaultdict
-    hitcat, hitn = defaultdict(set), defaultdict(int)
-    for k, v in ps.items():
-        if k == "documenti":
-            continue
-        for x in v:
-            hitcat[x["file"]].add(k); hitn[x["file"]] += 1
-    codice = sorted(hitcat, key=lambda f: (-len(hitcat[f]), -hitn[f], f))[:30]
-    with (audit / "letture.csv").open("w", newline="", encoding="utf-8") as fh:
-        w = csv.writer(fh)
-        w.writerow(["file", "perche", "letto", "note"])
-        for f in codice:
-            w.writerow([f, f"indizi: {', '.join(sorted(hitcat[f]))} ({hitn[f]})", "", ""])
-        for f in docs[:10]:
-            w.writerow([f, "documento privacy", "", ""])
+    # (1.3.3 scriveva anche letture.csv, un elenco fisso di file da leggere: +30% di tempo senza effetto misurabile
+    # sull'accordo; sostituito da entita.csv, che fissa le domande invece dei file.)
 
     mrows = list(csv.DictReader(gm.open(encoding="utf-8")))
     fields = list(mrows[0].keys()) if mrows else []

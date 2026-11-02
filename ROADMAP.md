@@ -24,7 +24,7 @@ Cosa è fatto, cosa viene dopo e perché. Le priorità vengono dalle misure (ban
 
 ## Prossimo
 
-1. **Accordo fra due giri su un repository grande: misurare, non inseguire.** Quattro tentativi il 01–02/11/2026 su UnityKore (categorie di indizi dal codice; temi documentali D/K/L e segreti versionati; abbinamento di righe e intervalli vicini nell'unione; `letture.csv`, un elenco fisso di file da leggere uguale per ogni giro). Sei coppie di giri, misurate con la stessa unione: fra 50% e 67%, le ultime due 60% e 63%. Su un repository di oltre mille file le cause viste da un giro solo cambiano da una coppia all'altra; la risposta resta `doppio` (due giri e l'unione). L'obiettivo «oltre il 70%» per un giro singolo è chiuso come non raggiungibile con il metodo attuale.
+1. **Accordo fra due giri su un repository grande.** Dal 1.4.0 le domande strutturate (cancellazione, export, oblio, isolamento per ogni entità) sono in `entita.csv`, pre-compilate: i due giri concordano sul 79% delle righe aperte e costano meno token. Restano variabili i temi fuori matrice (documenti, consensi, fornitori) e il raggruppamento in gap (49% complessivo). Prossimi passi possibili: regole più strette per oblio e isolamento, dove i giri discordano di più, e un confronto dell'unione sulle righe di `entita.csv` oltre che sui gap; per un cliente resta `doppio`.
 2. **Rilascio successivo** insieme ad appsec-sentinel.
 
 ## Dopo
