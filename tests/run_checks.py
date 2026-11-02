@@ -413,5 +413,14 @@ if have("check_matrix.py"):
     check("giudizi: «conforme all'informativa» è un confronto fra testi, «il sito è conforme» resta vietato",
           not _cm.GIUDIZI.search("trattamento conforme all'informativa") and _cm.GIUDIZI.search("il sito è conforme") is not None)
 
+if have("merge_audits.py"):
+    import importlib.util as _iu2
+    _sp2 = _iu2.spec_from_file_location("ma_", SC / "merge_audits.py"); _ma = _iu2.module_from_spec(_sp2); _sp2.loader.exec_module(_ma)
+    fa_ = {"titolo": "x", "categoria": "N", "prova": {"riferimenti_file": ["src/api/route.ts:330-346"]}}
+    fb_ = {"titolo": "y", "categoria": "N", "prova": {"riferimenti_file": ["src/api/route.ts:313-340"]}}
+    fc_ = {"titolo": "z", "categoria": "N", "prova": {"riferimenti_file": ["src/api/route.ts:10-20"]}}
+    check("unione: intervalli che si sovrappongono nello stesso file contano come citazione vicina, intervalli lontani no",
+          any("sovrapposte" in w for w in _ma.similarity(fa_, fb_)[1]) and not any("sovrapposte" in w for w in _ma.similarity(fa_, fc_)[1]))
+
 print(f"\nriusciti: {ok}  falliti: {fail}")
 sys.exit(1 if fail else 0)

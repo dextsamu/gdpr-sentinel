@@ -5,10 +5,11 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/); v
 ## [Non rilasciato]
 ### Aggiunto
 - `punti-pericolosi.csv` comprende sempre quattro temi documentali, anche senza indizi nel codice: informativa e trasparenza (D), governance (K: registro, DPIA, nomine, accordi art. 28), data breach (L), segreti e configurazioni versionate (solo i file tracciati da Git).
-- `merge_audits.py` (condiviso): due gap che citano lo stesso file a meno di 3 righe di distanza contano come citazione vicina (+0,4), perché due giri citano spesso la stessa istruzione con un numero di riga diverso. Rimisurando i giri esistenti: UnityKore 59→65%, 63→67%, 44→56%, 46→50%; appsec invariato (Juice 75%, Django 88%, Laravel 94%). Le unioni nuove sono state lette a mano.
+- `merge_audits.py` (condiviso): righe o intervalli dello stesso file che si sovrappongono (± 3 righe) contano come citazione vicina (+0,4): due giri citano spesso la stessa istruzione con un numero di riga diverso (`route.ts:312` e `:313`) o con intervalli diversi (`330-346` e `313-346`). Rimisurando tutte le coppie di giri su UnityKore: 59→65%, 63→67%, 44→60%, 46→50%, 56→60%, 50→63%; appsec invariato (Juice 75%, Django 88%, Laravel 94%). Le unioni nuove sono state lette a mano: sono la stessa causa.
+- **`letture.csv`**: il pre-passaggio sceglie i file da leggere a fondo, uguali per ogni giro (i 30 file con indizi in più categorie e fino a 10 documenti privacy); ogni riga chiude con `si` o con `no` e il motivo, altrimenti `chiudi` fallisce. Su UnityKore i due giri con l'elenco hanno letto per intero 16 e 32 file su 38 e impiegato circa 13 minuti invece di 9–10.
 
 ### Misurato
-- **Accordo su UnityKore con tutte le modifiche, due giri nuovi: 56%** (31 e 33 gap, `chiudi` senza falliti, 13 categorie chiuse in entrambi). Nessun miglioramento oltre la variabilità fra coppie di giri (56–67%): l'obiettivo «oltre il 70%» non è raggiungibile così su un repository di oltre mille file, e la skill continua a indicare `doppio` per le app grandi. Dettagli in ROADMAP.
+- **Accordo su UnityKore, con l'unione corretta: 60% (giri con i temi documentali) e 63% (giri anche con `letture.csv`)**; in tutto sei coppie di giri fra 50% e 67%. Prima stima: 56% (31 e 33 gap, `chiudi` senza falliti, 13 categorie chiuse in entrambi). Nessun miglioramento oltre la variabilità fra coppie di giri (56–67%): l'obiettivo «oltre il 70%» non è raggiungibile così su un repository di oltre mille file, e la skill continua a indicare `doppio` per le app grandi. Dettagli in ROADMAP.
 
 ## [1.3.2] - 2026-11-02
 ### Misurato

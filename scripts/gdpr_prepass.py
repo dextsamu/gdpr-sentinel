@@ -122,6 +122,25 @@ def main():
     (reg / "punti-pericolosi.txt").write_text("\n".join(out_lines) + "\n", encoding="utf-8")
     punti.write(audit, cats)
 
+    # Letture obbligatorie, uguali per ogni giro: su un repository di oltre mille file ogni giro ne leggeva a fondo
+    # circa 45 scegliendoli da sé, e le cause viste da un giro solo stavano in quelli. Ordine deterministico: file con
+    # indizi in più categorie, poi con più indizi; più i documenti privacy.
+    from collections import defaultdict
+    hitcat, hitn = defaultdict(set), defaultdict(int)
+    for k, v in ps.items():
+        if k == "documenti":
+            continue
+        for x in v:
+            hitcat[x["file"]].add(k); hitn[x["file"]] += 1
+    codice = sorted(hitcat, key=lambda f: (-len(hitcat[f]), -hitn[f], f))[:30]
+    with (audit / "letture.csv").open("w", newline="", encoding="utf-8") as fh:
+        w = csv.writer(fh)
+        w.writerow(["file", "perche", "letto", "note"])
+        for f in codice:
+            w.writerow([f, f"indizi: {', '.join(sorted(hitcat[f]))} ({hitn[f]})", "", ""])
+        for f in docs[:10]:
+            w.writerow([f, "documento privacy", "", ""])
+
     mrows = list(csv.DictReader(gm.open(encoding="utf-8")))
     fields = list(mrows[0].keys()) if mrows else []
     filled = []

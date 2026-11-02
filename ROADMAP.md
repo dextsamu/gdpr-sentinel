@@ -24,7 +24,7 @@ Cosa è fatto, cosa viene dopo e perché. Le priorità vengono dalle misure (ban
 
 ## Prossimo
 
-1. **Accordo fra due giri su un repository grande: misurare, non inseguire.** Tre tentativi il 01–02/11/2026 su UnityKore (categorie di indizi dal codice, poi anche temi documentali D/K/L e segreti versionati; abbinamento delle citazioni a meno di 3 righe nell'unione): 59%, 65% rimisurando gli stessi giri con l'abbinamento nuovo, 56% su due giri nuovi. L'accordo resta fra 56 e 67%: su 1074 file ogni giro ne legge a fondo circa 45, e le cause viste da un giro solo cambiano da una coppia di giri all'altra. La risposta già nella skill è `doppio` (due giri e l'unione: un giro solo vede circa due terzi delle cause dell'unione). Prossimo passo, se serve: un elenco fisso dei file da leggere a fondo, scelto dal pre-passaggio, uguale per tutti i giri.
+1. **Accordo fra due giri su un repository grande: misurare, non inseguire.** Quattro tentativi il 01–02/11/2026 su UnityKore (categorie di indizi dal codice; temi documentali D/K/L e segreti versionati; abbinamento di righe e intervalli vicini nell'unione; `letture.csv`, un elenco fisso di file da leggere uguale per ogni giro). Sei coppie di giri, misurate con la stessa unione: fra 50% e 67%, le ultime due 60% e 63%. Su un repository di oltre mille file le cause viste da un giro solo cambiano da una coppia all'altra; la risposta resta `doppio` (due giri e l'unione). L'obiettivo «oltre il 70%» per un giro singolo è chiuso come non raggiungibile con il metodo attuale.
 2. **Rilascio successivo** insieme ad appsec-sentinel.
 
 ## Dopo
