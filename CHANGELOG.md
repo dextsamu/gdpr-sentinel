@@ -3,6 +3,9 @@
 Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/); versioni secondo [SemVer](https://semver.org/lang/it/).
 
 ## [Non rilasciato]
+### Misurato (Juice Shop con altri agenti)
+- `appsec-sentinel rapido` su Juice Shop, stesso prompt: Codex 18/32 (vicino 22), Antigravity 6/32 (vicino 9), Claude 19–23/32. Tabella in `docs/ALTRI-AGENTI.md`.
+
 ### Aggiunto
 - `punti-pericolosi.csv` comprende sempre quattro temi documentali, anche senza indizi nel codice: informativa e trasparenza (D), governance (K: registro, DPIA, nomine, accordi art. 28), data breach (L), segreti e configurazioni versionate (solo i file tracciati da Git).
 - `merge_audits.py` (condiviso): righe o intervalli dello stesso file che si sovrappongono (± 3 righe) contano come citazione vicina (+0,4): due giri citano spesso la stessa istruzione con un numero di riga diverso (`route.ts:312` e `:313`) o con intervalli diversi (`330-346` e `313-346`). Rimisurando tutte le coppie di giri su UnityKore: 59→65%, 63→67%, 44→60%, 46→50%, 56→60%, 50→63%; appsec invariato (Juice 75%, Django 88%, Laravel 94%). Le unioni nuove sono state lette a mano: sono la stessa causa.
