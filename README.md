@@ -21,6 +21,9 @@ Questa skill parte dal codice, dalla configurazione e dai documenti, e porta a t
 >
 > 🤝 **Skill gemella**: per la parte di sicurezza (codice, API, infrastruttura, dipendenze) usa [`appsec-sentinel`](https://github.com/dextsamu/appsec-sentinel). Insieme producono un unico report PDF: vedi [Con appsec-sentinel](#con-appsec-sentinel).
 
+<img src="docs/img/demo.gif" alt="gdpr-sentinel demo on a school website bench" width="760"><br>
+<sub>Giro reale sul banco del sito scolastico: comandi e output veri, nulla di preparato. 15 difetti su 15, nessun falso allarme sulle 5 esche.</sub>
+
 [Perché](#perché-esiste) · [Come funziona](#come-funziona) · [Controlli A–N](#i-controlli-an) · [Esempio](#dal-fatto-alla-domanda) · [Installazione](#installazione) · [Limiti](#cosa-non-fa) · [FAQ](#domande-frequenti)
 
 </div>

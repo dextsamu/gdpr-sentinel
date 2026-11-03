@@ -5,6 +5,9 @@ Website: [https://dextsamu.github.io/gdpr-sentinel/](https://dextsamu.github.io/
 **A technical and documentary GDPR / ePrivacy review skill for AI coding agents. It maps real processing, finds gaps with evidence, and never declares compliance.**
 Built for Claude; the sister skill [`appsec-sentinel`](https://github.com/dextsamu/appsec-sentinel) covers application security. Apache-2.0. © Samuele Cucurnia and Pietro Previtali.
 
+<p align="center"><img src="docs/img/demo.gif" alt="gdpr-sentinel demo on a school website bench" width="760"><br>
+<sub>Real run on the school-website bench: real commands and output, nothing staged. 15 of 15 planted defects, no false alarm on the 5 decoys.</sub></p>
+
 > **Commands and language.** Every command works in English or Italian (`quick`/`rapido`, `refute`/`smentita`, `close`/`chiudi`…): see the [command card](docs/COMMAND-CARD.md). The skill writes chat, findings and reports in the language you use. Machine-readable files keep canonical Italian field names and enum values because the scripts check them. The PDF generator produces an English report with `--lang en`.
 >
 > **Language note.** The skill's own instructions, references and templates are written in Italian (Italian public bodies and associations); the agent applies them and answers in your language. This page is a short English guide.
