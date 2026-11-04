@@ -7,7 +7,7 @@
 ![Licenza](https://img.shields.io/badge/licenza-Apache--2.0-0ea5a4?style=for-the-badge)
 ![Lingua](https://img.shields.io/badge/lingua-italiano%20%C2%B7%20English-22c55e?style=for-the-badge)
 ![Agenti](https://img.shields.io/badge/agenti-Claude%20%C2%B7%20Codex%20%C2%B7%20Antigravity-f59e0b?style=for-the-badge)
-![Versione](https://img.shields.io/badge/versione-1.4.2-6366f1?style=for-the-badge)
+![Versione](https://img.shields.io/badge/versione-1.5.0-6366f1?style=for-the-badge)
 [![Sito](https://img.shields.io/badge/sito-dextsamu.github.io-0f172a?style=for-the-badge)](https://dextsamu.github.io/gdpr-sentinel/)
 
 🇬🇧 **GDPR / ePrivacy review skill for AI coding agents** (Claude Code, Codex, Antigravity): maps the processing that really happens, finds gaps with evidence, never declares compliance. Works in English and Italian: **[English guide →](README.en.md)**
@@ -303,10 +303,10 @@ Titolare, DPO, legale o fornitori, a seconda del punto: la skill indica il desti
 
 Cosa viene dopo, in ordine e con il numero che ogni voce deve migliorare: [ROADMAP.md](ROADMAP.md).
 
-Versione 1.4.2. Cosa è già verificato e cosa no, in modo esplicito:
+Versione 1.5.0. Cosa è già verificato e cosa no, in modo esplicito:
 
 - Gli script e i template sono verificati automaticamente a ogni modifica (GitHub Actions); `tests/run_checks.py` prova gli script contro un'app finta con difetti noti. Per ora la CI su GitHub dipende dal limite di spesa dell'account, quindi il collaudo è stato eseguito in locale.
-- **Primo collaudo su un caso reale** (30/10/2026): applicazione web di proprietà dell'autore, sola analisi statica e documentale. Ha fatto emergere uno scostamento fra informativa e codice e ha fatto correggere le istruzioni (vedi CHANGELOG). Resta da collaudare: `cookie_scan.py` su un sito reale autorizzato (provato solo su una pagina locale), la verifica dei diritti su istanza autorizzata, e la bozza dell'art. 30 su progetti più piccoli: su un'app grande produce molte righe da raggruppare a mano. Dopo (31/10/2026): banco privacy `tests/bench-app` (15/15 difetti noti in due giri) e secondo banco `tests/bench-pa`, sito di una scuola in PHP (15/15 in due giri, 0 falsi allarmi) e quattro giri reali sullo stesso gestionale: due giri concordano sul 63% delle cause (dopo la regola «un gap = una causa»; prima 44–46%), quindi su un'app grande usa `doppio`. Segnala ciò che si rompe o confonde con una issue.
+- **Primo collaudo su un caso reale** (30/10/2026): applicazione web di proprietà dell'autore, sola analisi statica e documentale. Ha fatto emergere uno scostamento fra informativa e codice e ha fatto correggere le istruzioni (vedi CHANGELOG). Resta da collaudare: `cookie_scan.py` su un sito reale autorizzato (provato solo su una pagina locale), la verifica dei diritti su istanza autorizzata, e la bozza dell'art. 30 su progetti più piccoli: su un'app grande produce molte righe da raggruppare a mano. Dopo (31/10/2026): banco privacy `tests/bench-app` (15/15 difetti noti in due giri) e secondo banco `tests/bench-pa`, sito di una scuola in PHP (15/15 in due giri, 0 falsi allarmi) e quattro giri reali sullo stesso gestionale: due giri concordano sul 63% delle cause (dopo la regola «un gap = una causa»; prima 44–46%), quindi su un'app grande usa `doppio`. Con le tre matrici (per entità, informativa, ruoli e accessi; 1.5.0) due giri danno lo stesso giudizio sul 90–93%, 83–88% e 86–92% delle righe da chiudere; sull'insieme dei gap l'accordo resta 60–69%. Segnala ciò che si rompe o confonde con una issue.
 - **Altri agenti.** Provata una volta su Codex e su Antigravity (Windows, modalità `rapido`, app finta, solo analisi statica): le regole sono state rispettate e le lacune emerse sono state corrette nella 1.1.0. Non è una garanzia di compatibilità: vedi [`docs/ALTRI-AGENTI.md`](docs/ALTRI-AGENTI.md).
 - Le fonti su normativa e linee guida sono state controllate il 29/10/2026. Termini, decisioni di adeguatezza e adesioni al DPF cambiano: vanno riverificati ogni volta che servono.
 
