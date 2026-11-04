@@ -63,6 +63,7 @@ def main():
            run("privacy_scan.py", repo, "--json", reg / "privacy-scan.json"),
            run("entity_matrix.py", repo, "--out", audit / "entita.csv")]
     log.append(run("notice_matrix.py", repo, "--audit", audit))   # dopo draft_ropa e privacy_scan, di cui legge i risultati
+    log.append(run("access_matrix.py", repo, "--audit", audit))   # dopo entity_matrix: stesse entità
 
     def rows(p):
         return list(csv.DictReader(p.open(encoding="utf-8"))) if p.exists() else []

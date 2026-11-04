@@ -3,6 +3,10 @@
 Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/); versioni secondo [SemVer](https://semver.org/lang/it/).
 
 ## [Non rilasciato]
+### Aggiunto
+- **Matrice dei ruoli e degli accessi** (`scripts/access_matrix.py`, lanciato dal pre-passaggio dopo la matrice per entità, scrive `accessi.csv`): chi vede cosa. Ruoli dal codice (enum del modello utente in Prisma, scelte del campo ruolo in Django, ENUM SQL, oppure i valori confrontati con il campo ruolo, come `$_SESSION['ruolo'] !== 'segreteria'`); flag sull'utente (`canAccessX`, `isY`) citati nelle letture. Per le entità con dati a rischio più alto (salute, geolocalizzazione, finanziari, documenti) una riga per ruolo, con le letture nelle API divise in «citano il ruolo», «controllo di permesso generico», «nessun controllo di ruolo visibile», «citano solo altri ruoli»; per ogni entità una riga `pubblico (senza login)` se una lettura sta in un file senza controllo di accesso. Ruoli amministrativi e credenziali pre-compilati «n/a probabile». L'agente chiude con `ambito` (propri, gruppo, tutti, nessuno) ed `esito`; un gap per ruolo e categoria di dati, con il `file:riga` della lettura. Su UnityKore: 4 ruoli, 35 coppie da chiudere (5 pubbliche).
+- `chiudi` (condiviso): controlla `accessi.csv` (ambito ed esito su ogni coppia aperta, gap con gap_id e file:riga).
+- `merge_audits.py` (condiviso): accordo sulla matrice dei ruoli (stesso giudizio e stesso ambito) e `accessi.csv` unita con l'ambito più ampio dichiarato.
 
 ## [1.4.2] - 2026-11-02
 ### Aggiunto

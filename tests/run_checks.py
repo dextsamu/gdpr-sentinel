@@ -473,6 +473,69 @@ if have("merge_audits.py") and have("entity_matrix.py"):
     check("unione: accordo cella per cella sulla matrice per entità (1 su 2 righe aperte) ed entita.csv unita con la provenienza",
           "stesso giudizio (gap o no) su 1/2" in rm_.stdout and "gap per B" in uni, rm_.stdout[-400:])
 
+if have("access_matrix.py"):
+    ar = tmp / "acc-repo"
+    (ar / "prisma").mkdir(parents=True)
+    (ar / "prisma" / "schema.prisma").write_text(
+        "enum UserRole {\n  ADMIN\n  RESPONSABILE\n  DIPENDENTE\n}\n\nmodel User {\n  id String @id\n  email String\n  role UserRole\n"
+        "  canVedereSalute Boolean @default(false)\n  isActive Boolean @default(true)\n}\n\n"
+        "model Certificato {\n  id String @id\n  userId String\n  certificatoMedico String\n}\n\nmodel Nota {\n  id String @id\n  userId String\n  email String\n}\n",
+        encoding="utf-8")
+    for rel, body in (("src/app/api/certificati/route.ts", "const u = await requireAuth()\nif (u.role !== 'RESPONSABILE') throw new Error()\n"
+                                                           "const c = await prisma.certificato.findMany({})\n"),
+                      ("src/app/api/certificati/mie/route.ts", "const u = await requireAuth()\nconst c = await prisma.certificato.findMany({ where: { userId: u.id } })\n"),
+                      ("src/app/api/pubblico/route.ts", "export async function GET() {\n  return prisma.certificato.findFirst({})\n}\n"),
+                      ("src/app/api/note/route.ts", "const u = await requireAuth()\nconst n = await prisma.nota.findMany({})\n")):
+        (ar / rel).parent.mkdir(parents=True, exist_ok=True)
+        (ar / rel).write_text(body, encoding="utf-8")
+    aw = tmp / "acc-audit"; aw.mkdir()
+    run("entity_matrix.py", ar, "--out", aw / "entita.csv")
+    ra = run("access_matrix.py", ar, "--audit", aw)
+    acc = {(r["entita"], r["ruolo"]): r["prepass"] for r in csv.DictReader((aw / "accessi.csv").open(encoding="utf-8"))}
+    check("matrice dei ruoli: ruoli dall'enum del modello utente, flag sull'utente (non isActive), ADMIN pre-compilato, "
+          "lettura del certificato che cita RESPONSABILE, lettura senza controllo per DIPENDENTE, riga pubblico per la route senza login",
+          "3 ruoli" in ra.stdout and "canVedereSalute" in ra.stdout and "isActive" not in ra.stdout
+          and acc.get(("Certificato", "ADMIN"), "").startswith("n/a probabile")
+          and "citano il ruolo: 1 (src/app/api/certificati/route.ts:3)" in acc.get(("Certificato", "RESPONSABILE"), "")
+          and "nessun controllo di ruolo visibile" in acc.get(("Certificato", "DIPENDENTE"), "")
+          and "src/app/api/pubblico/route.ts:2" in acc.get(("Certificato", "pubblico (senza login)"), ""), ra.stdout + str(acc)[:600])
+    check("matrice dei ruoli: niente righe per ruolo su un'entità senza dati a rischio (nota libera), solo la riga pubblico",
+          ("Nota", "DIPENDENTE") not in acc and ("Nota", "pubblico (senza login)") in acc, str(acc)[:400])
+    (aw / "gaps.csv").write_text("id,controllo,titolo,riferimenti,stato,priorita,rischio_interessati,norma,domanda_id,smentita\n"
+                                 "GDPR-001,H,Certificati di tutti a ogni dipendente,src/app/api/certificati/mie/route.ts:2,confermato da codice/config,alta,,,,\n", encoding="utf-8")
+    r_a = run("check_delivery.py", aw)
+    check("chiudi (gdpr): coppie entità × ruolo aperte fanno fallire", "FAIL matrice dei ruoli e degli accessi" in r_a.stdout, r_a.stdout[-400:])
+    rows_a = list(csv.DictReader((aw / "accessi.csv").open(encoding="utf-8")))
+    for r in rows_a:
+        if not r["prepass"].startswith(("si", "n/a")):
+            r["esito"], r["ambito"] = "ok", "propri"
+    rows_a[[i for i, r in enumerate(rows_a) if (r["entita"], r["ruolo"]) == ("Certificato", "DIPENDENTE")][0]].update(esito="gap", gap_id="GDPR-001", note="")
+    with (aw / "accessi.csv").open("w", newline="", encoding="utf-8") as fh:
+        wa = csv.DictWriter(fh, fieldnames=list(rows_a[0])); wa.writeheader(); wa.writerows(rows_a)
+    r_a2 = run("check_delivery.py", aw)
+    check("chiudi (gdpr): gap di accesso senza il file:riga della lettura in note fa fallire", "senza il file:riga della lettura" in r_a2.stdout, r_a2.stdout[-400:])
+    # unione di due giri: stesso giudizio su 2 coppie su 3 (B vede un gap), ambito diverso su una
+    bw = tmp / "acc-audit-B"; bw.mkdir()
+    (bw / "gaps.csv").write_text((aw / "gaps.csv").read_text(encoding="utf-8"), encoding="utf-8")
+    for r in rows_a:
+        r["note"] = "src/app/api/certificati/mie/route.ts:2" if r["esito"] == "gap" else r["note"]
+    with (aw / "accessi.csv").open("w", newline="", encoding="utf-8") as fh:
+        wa = csv.DictWriter(fh, fieldnames=list(rows_a[0])); wa.writeheader(); wa.writerows(rows_a)
+    rows_b = [dict(r) for r in rows_a]
+    for r in rows_b:
+        if (r["entita"], r["ruolo"]) == ("Certificato", "RESPONSABILE"):
+            r.update(esito="gap", ambito="tutti", gap_id="GDPR-001", note="src/app/api/certificati/route.ts:3")
+    with (bw / "accessi.csv").open("w", newline="", encoding="utf-8") as fh:
+        wb = csv.DictWriter(fh, fieldnames=list(rows_b[0])); wb.writeheader(); wb.writerows(rows_b)
+    ra3 = run("check_delivery.py", aw)
+    check("chiudi (gdpr): matrice dei ruoli chiusa con ambito ed esito passa", "ok   matrice dei ruoli e degli accessi" in ra3.stdout, ra3.stdout[-400:])
+    rmu = run("merge_audits.py", aw, bw, "--etichette", "A,B", "--out", tmp / "acc-U")
+    n_open = sum(1 for r in rows_a if r["esito"])
+    check("unione: accordo sulla matrice dei ruoli (gap o no e ambito) e accessi.csv unita con l'ambito più ampio",
+          f"su {n_open - 1}/{n_open} coppie aperte" in rmu.stdout and f"stesso ambito {n_open - 1}/{n_open}" in rmu.stdout
+          and "gap per B" in (tmp / "acc-U" / "accessi.csv").read_text(encoding="utf-8")
+          and ",tutti,gap," in (tmp / "acc-U" / "accessi.csv").read_text(encoding="utf-8"), rmu.stdout[-500:])
+
 if have("notice_matrix.py") and SBP.exists():
     nm = (pw / "informativa.csv")
     if not nm.exists():
