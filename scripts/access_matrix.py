@@ -140,6 +140,7 @@ def main():
             g = [k for k, rx in dr.GROUPS.items() if any(re.search(rx, f, re.I) for f in fields)]
             if g:
                 ents.setdefault(name, (", ".join(g), s))
+    fields_of = {n.lower(): f for n, f, _ in dr.models(repo)}
     reads_of = {}
     for name, (_, fonte) in ents.items():
         kind = "prisma" if fonte.endswith(".prisma") else "django" if fonte.endswith(".py") else "sql"
@@ -169,6 +170,14 @@ def main():
         if not cols:
             rows.append([name, dati, "*", f"non trovato: nessun ruolo riconosciuto nel codice; letture: {len(rs)} ("
                          + "; ".join(f"{f}:{n}" for f, n in rs[:4]) + ")", "", "", "", ""])
+            continue
+        if not USER_MODEL.match(name) and not any(em.USER_LINK.match(f) for f in fields_of.get(name.lower(), [])):
+            # catalogo, configurazione o luogo: i dati non riguardano una persona (su UnityKore i due giri chiudevano queste
+            # righe metà «non applicabile» e metà «ok», e la classificazione veniva da un campo come «nome» del corso)
+            for r in cols:
+                if r == "pubblico (senza login)" or SENSIBILI.search(dati):
+                    rows.append([name, dati, r, "n/a probabile: nessun legame con una persona nel modello (catalogo, configurazione o luogo); "
+                                 "cambiala solo se i campi contengono dati di persone", "", "", "", ""])
             continue
         if em.TECH.search(name):
             for r in cols:
