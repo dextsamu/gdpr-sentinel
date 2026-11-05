@@ -1,334 +1,333 @@
 <div align="center">
 
-<img src="docs/img/banner.svg" alt="gdpr-sentinel: privacy, ciò che il sistema fa davvero, senza giudizi di conformità" width="100%">
+<img src="docs/img/banner.svg" alt="gdpr-sentinel: privacy, what the system really does, with no compliance verdicts" width="100%">
 
 <br>
 
-![Licenza](https://img.shields.io/badge/licenza-Apache--2.0-0ea5a4?style=for-the-badge)
-![Lingua](https://img.shields.io/badge/lingua-italiano%20%C2%B7%20English-22c55e?style=for-the-badge)
-![Agenti](https://img.shields.io/badge/agenti-Claude%20%C2%B7%20Codex%20%C2%B7%20Antigravity-f59e0b?style=for-the-badge)
-![Versione](https://img.shields.io/badge/versione-1.5.0-6366f1?style=for-the-badge)
-[![Sito](https://img.shields.io/badge/sito-dextsamu.github.io-0f172a?style=for-the-badge)](https://dextsamu.github.io/gdpr-sentinel/)
+![License](https://img.shields.io/badge/license-Apache--2.0-0ea5a4?style=for-the-badge)
+![Language](https://img.shields.io/badge/language-English%20%C2%B7%20italiano-22c55e?style=for-the-badge)
+![Agents](https://img.shields.io/badge/agents-Claude%20%C2%B7%20Codex%20%C2%B7%20Antigravity-f59e0b?style=for-the-badge)
+![Version](https://img.shields.io/badge/version-1.5.0-6366f1?style=for-the-badge)
+[![Website](https://img.shields.io/badge/website-dextsamu.github.io-0f172a?style=for-the-badge)](https://dextsamu.github.io/gdpr-sentinel/index.en.html)
 
-🇬🇧 **GDPR / ePrivacy review skill for AI coding agents** (Claude Code, Codex, Antigravity): maps the processing that really happens, finds gaps with evidence, never declares compliance. Works in English and Italian: **[English guide →](README.en.md)**
+## 🇮🇹 [Leggi in italiano →](README.it.md)
 
-**«Siamo a posto col GDPR?» è la domanda sbagliata a cui rispondere di sì.**
-Questa skill parte dal codice, dalla configurazione e dai documenti, e porta a titolare, DPO e legale **fatti** e **domande già scritte**, non verdetti. Nata per Claude, provata anche su Codex e Antigravity: vedi [`docs/ALTRI-AGENTI.md`](docs/ALTRI-AGENTI.md).
+**"Are we GDPR compliant?" is the wrong question to answer yes to.**
+This skill starts from the code, the configuration and the documents, and brings the controller, the DPO and the lawyer **facts** and **ready-written questions**, not verdicts. Built for Claude, also tested on Codex and Antigravity: see [`docs/ALTRI-AGENTI.md`](docs/ALTRI-AGENTI.md) (in Italian).
 
-> 🌍 **English**: short guide in [`README.en.md`](README.en.md) and [command card](docs/COMMAND-CARD.md). I comandi funzionano anche in inglese (`quick`, `refute`, `close`…).
+> 🗒️ **Get started**: the one-page [command card](docs/COMMAND-CARD.md). Every command works in English or Italian (`static`/`statica`, `refute`/`smentita`, `close`/`chiudi`…).
 >
-> 🗒️ **Subito operativo**: la [scheda comandi](docs/SCHEDA-COMANDI.md) in una pagina.
->
-> 🤝 **Skill gemella**: per la parte di sicurezza (codice, API, infrastruttura, dipendenze) usa [`appsec-sentinel`](https://github.com/dextsamu/appsec-sentinel). Insieme producono un unico report PDF: vedi [Con appsec-sentinel](#con-appsec-sentinel).
+> 🤝 **Sister skill**: for security (code, APIs, infrastructure, dependencies) use [`appsec-sentinel`](https://github.com/dextsamu/appsec-sentinel). Together they produce a single PDF report: see [With appsec-sentinel](#with-appsec-sentinel).
 
 <img src="docs/img/demo.gif" alt="gdpr-sentinel demo on a school website bench" width="760"><br>
-<sub>Giro reale sul banco del sito scolastico: comandi e output veri, nulla di preparato. 15 difetti su 15, nessun falso allarme sulle 5 esche.</sub>
+<sub>Real run on the school-website bench: real commands and output, nothing staged. 15 of 15 planted defects, no false alarm on the 5 decoys.</sub>
 
-[Perché](#perché-esiste) · [Come funziona](#come-funziona) · [Controlli A–N](#i-controlli-an) · [Esempio](#dal-fatto-alla-domanda) · [Installazione](#installazione) · [Limiti](#cosa-non-fa) · [FAQ](#domande-frequenti)
+[Why](#why-it-exists) · [How it works](#how-it-works) · [Controls A–N](#controls-an) · [Example](#from-fact-to-question) · [Installation](#installation) · [Limits](#what-it-does-not-do) · [FAQ](#faq)
 
 </div>
 
 ---
 
-## Perché esiste
+## Why it exists
 
-La conformità non coincide con il banner dei cookie, con la cifratura o con una pagina privacy ben scritta: dipende da cosa il sistema **fa realmente** con i dati e da decisioni che spettano al titolare.
+Compliance is not the cookie banner, encryption or a well-written privacy page: it depends on what the system **actually does** with the data and on decisions that belong to the controller.
 
-`gdpr-sentinel` confronta ciò che l'organizzazione dichiara con ciò che il sistema fa. Il risultato non è un parere, ma una base di fatti solida su cui un DPO o un legale possono decidere.
+`gdpr-sentinel` compares what the organization declares with what the system does. The result is not an opinion but a solid base of facts a DPO or a lawyer can decide on.
 
-| | Principio | Cosa cambia per te |
+| | Principle | What changes for you |
 |---|---|---|
-| 🔍 | **Trattamento reale, non dichiarato** | Funzionalità, SDK e integrazioni assenti dall'informativa saltano fuori |
-| ⚖️ | **Mai «conforme»** | Quattro stati ammessi, nessun giudizio finale |
-| ❓ | **Ogni dubbio ha la sua domanda** | Un punto non verificabile diventa una domanda formulata, con il materiale necessario |
-| 🧠 | **Giuridicamente prudente** | Non rende universali obblighi che dipendono da presupposti, scala o rischio; non inventa basi giuridiche al posto del titolare |
+| 🔍 | **Real processing, not declared processing** | Features, SDKs and integrations missing from the privacy notice come to light |
+| ⚖️ | **Never "compliant"** | Four allowed states, no final verdict |
+| ❓ | **Every doubt gets its question** | A point that cannot be verified becomes a written question, with the material needed |
+| 🧠 | **Legally careful** | It does not make universal obligations that depend on conditions, scale or risk; it does not invent legal bases on the controller's behalf |
 
-## Cosa ottieni
+## What you get
 
-| Output | Contenuto |
+| Output | Content |
 |---|---|
-| 🗂️ **Mappa dei trattamenti** | Una riga per trattamento: finalità, dati, interessati, destinatari, ruoli, retention; i campi non dimostrabili restano «non verificato» |
-| 🧮 **Matrice GDPR/ePrivacy A–N** | Per ogni controllo: evidenza tecnica o documentale, stato, gap, rischio per gli interessati |
-| 📨 **Domande aperte** | Per titolare, DPO, legale e fornitori, già pronte, con il materiale necessario |
-| 🛠️ **Piano di intervento** | Priorità guidate dal rischio per gli interessati, non da scadenze arbitrarie, più il piano di retest |
-| 🤖 **Prove e bozze automatiche** | Scansione di cookie e tracker prima del consenso, bozza del registro art. 30 e dei fornitori, evidenze di retention |
-| 📄 **Report PDF** | Completo, versione breve per la direzione, in inglese, con confronto tra audit |
-| 🧾 **Elenco dei limiti** | Che cosa non è stato verificato e perché |
+| 🗂️ **Processing map** | One row per processing activity: purpose, data, data subjects, recipients, roles, retention; fields that cannot be proven stay "not verified" |
+| 🧮 **GDPR/ePrivacy matrix A–N** | For each control: technical or documentary evidence, state, gap, risk to data subjects |
+| 🧩 **Fixed matrices** | Per data entity (deletion, export, erasure, tenant isolation), privacy notice item by item, and who can see what for each role |
+| 📨 **Open questions** | For the controller, DPO, lawyer and suppliers, ready to send, with the material needed |
+| 🛠️ **Action plan** | Priorities driven by the risk to data subjects, not by arbitrary deadlines, plus the retest plan |
+| 🤖 **Automated evidence and drafts** | Cookie and tracker scan before consent, draft record of processing (Art. 30) and supplier list, retention evidence |
+| 📄 **PDF report** | Full, short executive version, English labels, comparison between audits |
+| 🧾 **List of limits** | What was not verified and why |
 
-I dati sono in Markdown e CSV, in una cartella riservata fuori dai repository pubblici.
+Data is stored as Markdown and CSV in a confidential folder outside public repositories.
 
-## Come funziona
+## How it works
 
 <div align="center">
-<img src="docs/img/flow.svg" alt="Dal sistema reale alle domande: intake, mappa dei trattamenti, controlli B–N, matrice, domande, piano" width="100%">
+<img src="docs/img/flow.svg" alt="From the real system to the questions: intake, processing map, controls B–N, matrix, questions, plan" width="100%">
 </div>
 
-1. **Intake breve**: titolare e ruoli noti, ambienti autorizzati, documenti disponibili (informativa, registro, DPA, DPIA), eventuale audit di sicurezza in corso.
-2. **Mappa dei trattamenti** (controllo A) in `processing-map.csv`.
-3. **Controlli B–N** pertinenti, con la checklist di `references/controls.md` e i trabocchetti giuridici da evitare.
-4. **Matrice** in `gdpr-matrix.csv`, verificata da `check_matrix.py`.
-5. **Domande** con `questions-template.md`.
-6. **Piano di intervento** e di retest.
+1. **Short intake**: controller and known roles, authorized environments, available documents (privacy notice, record of processing, DPAs, DPIA), any security audit in progress.
+2. **Processing map** (control A) in `processing-map.csv`.
+3. The relevant **controls B–N**, with the checklist in `references/controls.md` and the legal pitfalls to avoid.
+4. **Matrix** in `gdpr-matrix.csv`, checked by `check_matrix.py`.
+5. **Questions** with `questions-template.md`.
+6. **Action plan** and retest plan.
 
 > [!IMPORTANT]
-> Senza autorizzazione ai test attivi, la skill fa analisi statica e documentale e **prepara senza eseguire** i test del browser e delle richieste dei diritti.
+> Without authorization for active tests, the skill does static and documentary analysis and **prepares without running** the browser tests and the data-subject requests.
 
-## I controlli A–N
+## Controls A–N
 
 <div align="center">
-<img src="docs/img/controls.svg" alt="I quattordici controlli da A a N" width="100%">
+<img src="docs/img/controls.svg" alt="The fourteen controls from A to N" width="100%">
 </div>
 
 <details>
-<summary><b>Cosa si guarda in ciascun controllo</b> (tabella)</summary>
+<summary><b>What each control looks at</b> (table)</summary>
 
-| | Controllo | Cosa si guarda |
+| | Control | What is checked |
 |---|---|---|
-| A | Mappa dei trattamenti e ruoli | Titolari, responsabili, contitolari, flussi, copie, log, backup, provider AI |
-| B | Principi e basi giuridiche | Artt. 5 e 6; il consenso non è obbligatorio per ogni trattamento |
-| C | Dati particolari, penali, minori | Art. 9 e art. 10; niente «biometrico» per ogni foto |
-| D | Trasparenza | Informative (artt. 13/14) a confronto con interfacce, contratti e codice |
-| E | Cookie e tracking | ePrivacy e linee guida del Garante; verifica in browser pulito prima e dopo la scelta |
-| F | Diritti degli interessati | Accesso, rettifica, cancellazione, portabilità, opposizione; tempi e proroghe |
-| G | Retention e cancellazione effettiva | Soft delete, repliche, cache, log, backup, dataset AI |
-| H | Privacy by design e sicurezza | Artt. 25 e 32; collegamento ai finding di `appsec-sentinel` |
-| I | Fornitori e accordi | DPA art. 28, art. 26, sub-responsabili, comportamento reale |
-| J | Trasferimenti internazionali | Entità destinatarie, accessi remoti, meccanismo applicabile, stato attuale |
-| K | Governance | Artt. 24, 27, 30, 35-39: responsabilità, registro, DPIA, DPO |
-| L | Incidenti e data breach | Artt. 33-34: rilevazione, registro, notifiche; la decisione resta al titolare |
-| M | Profilazione, AI e marketing | Art. 22, opposizione, flussi verso i provider, AI Act distinto |
-| N | Casi italiani e settoriali | Lavoro, geolocalizzazione, sanitari, minori, ACN/NIS2 |
+| A | Processing map and roles | Controllers, processors, joint controllers, flows, copies, logs, backups, AI providers |
+| B | Principles and legal bases | Arts. 5 and 6; consent is not required for every processing activity |
+| C | Special categories, criminal data, minors | Art. 9 and Art. 10; not every photo is "biometric" |
+| D | Transparency | Privacy notices (Arts. 13/14) compared with interfaces, contracts and code |
+| E | Cookies and tracking | ePrivacy and the Italian Garante's guidelines; checked in a clean browser before and after the choice |
+| F | Data-subject rights | Access, rectification, erasure, portability, objection; deadlines and extensions |
+| G | Retention and actual deletion | Soft delete, replicas, caches, logs, backups, AI datasets |
+| H | Privacy by design and security | Arts. 25 and 32; linked to `appsec-sentinel` findings |
+| I | Suppliers and agreements | Art. 28 DPAs, Art. 26, sub-processors, actual behaviour |
+| J | International transfers | Receiving entities, remote access, applicable mechanism, current status |
+| K | Governance | Arts. 24, 27, 30, 35-39: accountability, record of processing, DPIA, DPO |
+| L | Incidents and data breaches | Arts. 33-34: detection, register, notifications; the decision stays with the controller |
+| M | Profiling, AI and marketing | Art. 22, objection, flows to providers, the AI Act kept separate |
+| N | Italian and sector-specific cases | Employment, geolocation, health, minors, ACN/NIS2 |
 </details>
 
-## Quattro stati, nessun giudizio
+## Four states, no verdict
 
 <div align="center">
-<img src="docs/img/states.svg" alt="Stati ammessi: riscontrato, confermato da codice o configurazione, ipotesi, non verificabile" width="100%">
+<img src="docs/img/states.svg" alt="Allowed states: found, confirmed from code or configuration, hypothesis, not verifiable" width="100%">
 </div>
 
-Non esistono «conforme» e «non conforme». Lo script `check_matrix.py` rifiuta una matrice con stati non ammessi o con righe che affermano conformità.
+There is no "compliant" or "non-compliant". The states are found (`riscontrato`), confirmed from code or configuration (`confermato da codice/config`), hypothesis to validate (`ipotesi da validare`) and not verifiable (`non verificabile`). The script `check_matrix.py` rejects a matrix with states that are not allowed or with rows that claim compliance.
 
-## Dal fatto alla domanda
+## From fact to question
 
-Una riga della matrice e la domanda che ne nasce, da un collaudo vero e anonimizzato.
+One matrix row and the question it leads to, from a real anonymized test run.
 
 <div align="center">
-<img src="docs/img/example.svg" alt="Una riga di matrice su informativa e trasferimenti e la domanda collegata a titolare e DPO" width="100%">
+<img src="docs/img/example.svg" alt="A matrix row on privacy notice and transfers, and the related question for the controller and the DPO" width="100%">
 </div>
 
-## Esempio di sessione
+## Example session
 
-> Frasi pronte: [`docs/ESEMPI-DI-UTILIZZO.md`](docs/ESEMPI-DI-UTILIZZO.md). Un collaudo anonimizzato da un caso reale: [`examples/collaudo-statico/`](examples/collaudo-statico/README.md).
+> Ready-made phrases: [`docs/ESEMPI-DI-UTILIZZO.md`](docs/ESEMPI-DI-UTILIZZO.md) (in Italian). An anonymized test run from a real case: [`examples/collaudo-statico/`](examples/collaudo-statico/README.md).
 
-<img src="docs/img/caso-reale.svg" alt="Informativa contro codice: uno scostamento emerso in un collaudo reale" width="50%">
+<img src="docs/img/caso-reale.svg" alt="Privacy notice versus code: a gap found in a real test run" width="50%">
 
-Il ritmo del lavoro, da un collaudo vero (gestionale web di proprietà di chi lo usa, solo analisi statica e documentale, anonimizzato):
+The rhythm of the work, from a real test run (a web management app owned by the person using the skill, static and documentary analysis only, anonymized):
 
-> **Tu:** Verifica la parte privacy di questa applicazione. Solo analisi statica.
+> **You:** Check the privacy side of this application. Static analysis only.
 >
-> **Agente:** Parto da ciò che l'applicazione fa davvero. Dal codice ricavo timbrature con GPS, assenze con certificati medici, notifiche push e WhatsApp, backup su un servizio cloud. Mi servono informativa, registro dei trattamenti, DPA e l'elenco dei fornitori; non avendoli, li tratto come «non verificabili» con la domanda già scritta.
+> **Agent:** I'll start from what the application really does. From the code I can see time clocking with GPS, absences with medical certificates, push and WhatsApp notifications, backups to a cloud service. I need the privacy notice, the record of processing, the DPAs and the supplier list; since I don't have them, I treat them as "not verifiable", with the question already written.
 >
-> *(a fine lavoro)* Mappati 6 trattamenti. Matrice A–N: 14 controlli, 4 non verificabili perché dipendono da documenti o decisioni del titolare. Il punto concreto: l'informativa dice «server in UE, nessun trasferimento extra-SEE» e non nomina destinatari, mentre il codice carica font da Google, usa Twilio e fa backup su Drive. Dodici domande pronte, ciascuna con il destinatario: titolare, DPO, legale o fornitore.
+> *(at the end)* 6 processing activities mapped. A–N matrix: 14 controls, 4 not verifiable because they depend on documents or decisions of the controller. The concrete point: the privacy notice says "servers in the EU, no transfers outside the EEA" and names no recipients, while the code loads fonts from Google, uses Twilio and backs up to Drive. Twelve questions ready, each with its recipient: controller, DPO, lawyer or supplier.
 
-Il caso completo, anonimizzato, è in [`examples/collaudo-statico/`](examples/collaudo-statico/README.md).
+The full case, anonymized, is in [`examples/collaudo-statico/`](examples/collaudo-statico/README.md).
 
-Nel risultato non compaiono né «conforme» né «non conforme»: le decisioni restano al titolare.
+Neither "compliant" nor "non-compliant" appears in the result: the decisions stay with the controller.
 
-## Esempi di richiesta
+## Example requests
 
 ```text
-Verifica la parte privacy di questo sito: cookie, tracking e informativa.
+Check the privacy side of this website: cookies, tracking and privacy notice.
 
-Fai la mappa dei trattamenti del gestionale in questa cartella.
+Build the processing map of the management app in this folder.
 
-Siamo a posto col GDPR sul modulo iscrizioni? Dimmi cosa risulta e cosa va chiesto al DPO.
+Are we GDPR compliant on the registration form? Tell me what the code shows and what to ask the DPO.
 
-Controlla fornitori e trasferimenti extra-UE usati da questa app.
+Check the suppliers and transfers outside the EU used by this app.
 
-Prepara le domande per il legale sui tempi di conservazione dei log.
+Prepare the questions for the lawyer on log retention periods.
 ```
 
-## Comandi
+## Commands
 
-> 🗒️ Versione corta, una pagina: [**scheda comandi**](docs/SCHEDA-COMANDI.md).
+> 🗒️ Short version, one page: [**command card**](docs/COMMAND-CARD.md).
 
-Le skill non hanno sotto-comandi nativi: le parole qui sotto sono una **convenzione definita nelle istruzioni** (`SKILL.md`). Dove l'agente lo supporta (per esempio Claude Code) puoi anteporre il nome della skill con la barra; altrove scrivi la frase in chat. Nessun comando amplia il mandato.
+Skills have no native sub-commands: the words below are a **convention defined in the instructions** (`SKILL.md`). Where the agent supports it (for example Claude Code) you can prefix the skill name with a slash; elsewhere, write the phrase in chat. Every command also works with its Italian word. No command widens the mandate.
 
-| Comando | Cosa fa |
+| Command | What it does |
 |---|---|
-| `/gdpr-sentinel statica <repo>` | Valutazione A–N, solo analisi statica e documentale |
-| `/gdpr-sentinel prepass <repo>` | Pre-passaggio deterministico: registro e fornitori in bozza, retention, indizi privacy nel codice (tracker, cookie, consenso, dati sanitari, minori, geolocalizzazione, log, diritti, marketing, informativa) |
-| `/gdpr-sentinel doppio <repo>` | Due giri indipendenti e la loro unione: per i casi in cui il risultato conta |
-| `/gdpr-sentinel informativa <repo>` | Confronto tra informativa e codice (controllo D) |
-| `/gdpr-sentinel cookie <repo> [url…]` | Cookie e tracking (controllo E); con URL locale o autorizzato, scansione di cookie, storage e terze parti **prima del consenso** |
-| `/gdpr-sentinel retention <repo>` | Conservazione e cancellazione, backup compresi (controllo G), con evidenze nel codice e confronto con i tempi dichiarati |
-| `/gdpr-sentinel fornitori <repo>` | Fornitori e trasferimenti (controlli I e J), con le domande per DPA |
-| `/gdpr-sentinel documentale <repo>` | Audit documentale privacy (informativa, registro, DPIA, DPA, procedure) e report PDF aziendale |
-| `/gdpr-sentinel bozza-registro <repo>` | Bozza del registro dei trattamenti (art. 30) e dei fornitori, ricavata dal codice |
-| `/gdpr-sentinel chiudi [cartella]` | Controllo di consegna in un solo passo: zero «falliti» prima di dare la valutazione |
-| `/gdpr-sentinel smentita [cartella]` | Un verificatore diverso dall'autore prova a confutare ogni gap riscontrato o confermato |
-| `/gdpr-sentinel redazione [cartella]` | Controlla segreti e dati personali prima di consegnare |
-| `/gdpr-sentinel confronta <vecchio> <nuovo>` | Differenze tra due audit |
-| `/gdpr-sentinel sicurezza <repo>` | Passa ad `appsec-sentinel` per i finding di sicurezza che incidono sui dati (art. 32) |
-| `/gdpr-sentinel pdf [cartella]` | Genera il report PDF dai file di lavoro (opzioni: `--sintetico`, `--lang en`, `--previous`, `--nis2`) |
-| `/gdpr-sentinel domande [cartella]` | Domande aperte per titolare, DPO, legale, fornitori |
-| `/gdpr-sentinel report [cartella]` | Controlla la matrice e consegna matrice, domande e piano |
+| `/gdpr-sentinel static <repo>` | A–N assessment, static and documentary analysis only |
+| `/gdpr-sentinel prepass <repo>` | Deterministic pre-pass: draft record and suppliers, retention, privacy hints in the code (trackers, cookies, consent, health data, minors, geolocation, logs, rights, marketing, privacy notice), and the three fixed matrices |
+| `/gdpr-sentinel double <repo>` | Two independent runs and their merge: for when the result matters |
+| `/gdpr-sentinel notice <repo>` | Privacy notice versus code (control D) |
+| `/gdpr-sentinel cookie <repo> [url…]` | Cookies and tracking (control E); with a local or authorized URL, scans cookies, storage and third parties **before consent** |
+| `/gdpr-sentinel retention <repo>` | Retention and deletion, backups included (control G), with evidence in the code compared to the declared periods |
+| `/gdpr-sentinel suppliers <repo>` | Suppliers and transfers (controls I and J), with the questions for the DPAs |
+| `/gdpr-sentinel documentary <repo>` | Privacy documentary audit (privacy notice, record, DPIA, DPAs, procedures) and a corporate PDF report |
+| `/gdpr-sentinel draft-register <repo>` | Draft record of processing (Art. 30) and supplier list, derived from the code |
+| `/gdpr-sentinel close [folder]` | Delivery check in one step: zero "FAIL" before delivering the assessment |
+| `/gdpr-sentinel refute [folder]` | A verifier other than the author tries to refute every found or confirmed gap |
+| `/gdpr-sentinel redact [folder]` | Checks for secrets and personal data before delivery |
+| `/gdpr-sentinel compare <old> <new>` | Differences between two audits |
+| `/gdpr-sentinel security <repo>` | Hands over to `appsec-sentinel` for security findings that affect data (Art. 32) |
+| `/gdpr-sentinel pdf [folder]` | Builds the PDF report from the working files (options: `--sintetico`, `--lang en`, `--previous`, `--nis2`) |
+| `/gdpr-sentinel questions [folder]` | Open questions for the controller, DPO, lawyer, suppliers |
+| `/gdpr-sentinel report [folder]` | Checks the matrix and delivers matrix, questions and plan |
 
-Script da riga di comando:
+Command-line scripts:
 
 ```bash
-python3 scripts/init_gdpr.py <cartella>                                      # crea la cartella di lavoro
-pip install reportlab                                                         # una volta sola
-python3 scripts/build_report_pdf.py <cartella>                               # report PDF in formato aziendale
-python3 scripts/check_matrix.py <gdpr-matrix.csv> [--map processing-map.csv] # controlla la matrice
+python3 scripts/init_gdpr.py <folder>                                        # creates the working folder
+pip install reportlab                                                         # once
+python3 scripts/build_report_pdf.py <folder>                                 # corporate PDF report
+python3 scripts/check_matrix.py <gdpr-matrix.csv> [--map processing-map.csv] # checks the matrix
 ```
 
-Esempi completi: [`docs/ESEMPI-DI-UTILIZZO.md`](docs/ESEMPI-DI-UTILIZZO.md).
+Full examples: [`docs/ESEMPI-DI-UTILIZZO.md`](docs/ESEMPI-DI-UTILIZZO.md) (in Italian).
 
-## Strumenti automatici
+## Automated tools
 
-Script in `scripts/` che preparano prove e bozze senza stabilire la conformità. Flusso e limiti in [`references/automation.md`](references/automation.md).
+Scripts in `scripts/` that prepare evidence and drafts without deciding compliance. Flow and limits in [`references/automation.md`](references/automation.md).
 
-| Script | Cosa fa | Limite dichiarato |
+| Script | What it does | Stated limit |
 |---|---|---|
-| `cookie_scan.py` | Browser pulito, nessun clic: registra cookie (mai i valori), storage e domini di terzi | URL locali o con conferma scritta del titolare; classificazione indicativa |
-| `draft_ropa.py` | Bozza di processing map e fornitori da schema, dipendenze e URL | Tutto «ipotesi da validare»: ruoli, basi giuridiche e paesi li conferma il titolare |
-| `draft_dpia.py` | Bozza di scheda DPIA (art. 35) dalla mappa dei trattamenti, con indicatori di necessità | Non è una DPIA e non decide se serve: lo stabilisce il titolare con il DPO |
-| `retention_check.py` | Job pianificati, cancellazioni con soglia, modelli senza cancellazione evidente | L'assenza di evidenza non è una violazione |
-| `canonicalize.py` | Riporta ai valori canonici italiani stati e severità scritti in inglese | Tocca solo valori enumerati, mai il testo libero |
-| `check_delivery.py` | Un solo controllo prima della consegna: matrice, smentite, redazione (anche i valori dei segreti), parole vietate | Meccanico: non prova che la valutazione sia giusta |
-| `redact_check.py`, `compare_audits.py` | Controllo di redazione; confronto tra audit | Non stampa mai i valori; «risolto» non è «verificato» |
+| `cookie_scan.py` | Clean browser, no clicks: records cookies (never their values), storage and third-party domains | Local URLs or with the controller's written confirmation; indicative classification |
+| `draft_ropa.py` | Draft processing map and suppliers from schema, dependencies and URLs | All "hypothesis to validate": roles, legal bases and countries are confirmed by the controller |
+| `draft_dpia.py` | Draft DPIA sheet (Art. 35) from the processing map, with need indicators | Not a DPIA and it does not decide whether one is needed: the controller decides with the DPO |
+| `retention_check.py` | Scheduled jobs, threshold-based deletions, models with no evident deletion | Absence of evidence is not a violation |
+| `entity_matrix.py`, `notice_matrix.py`, `access_matrix.py` | Fixed rows per data entity, per privacy-notice item and per role, so two runs answer the same questions | The first answer is mechanical; the agent closes every open row |
+| `canonicalize.py` | Converts states and severities written in English to the canonical Italian values | Touches only enumerated values, never free text |
+| `check_delivery.py` | One check before delivery: matrix, refutations, redaction (including secret values), forbidden words, open matrix rows | Mechanical: it does not prove the assessment is right |
+| `redact_check.py`, `compare_audits.py` | Redaction check; comparison between audits | Never prints values; "resolved" is not "verified" |
 
-Collaudo: `python3 tests/run_checks.py`.
+Tests: `python3 tests/run_checks.py`.
 
-## Report PDF aziendale
+## Corporate PDF report
 
-Il comando `documentale` esamina i documenti privacy (informativa, registro, DPIA, DPA, procedure) e li **confronta con il trattamento reale**; `scripts/build_report_pdf.py` assembla un PDF A4 con copertina, sintesi, matrice A–N, mappa dei trattamenti, audit documentale, domande e limiti. Nessun «conforme» o «non conforme».
+The `documentary` command examines the privacy documents (privacy notice, record of processing, DPIA, DPAs, procedures) and **compares them with the real processing**; `scripts/build_report_pdf.py` assembles an A4 PDF with cover, summary, A–N matrix, processing map, documentary audit, questions and limits. No "compliant" or "non-compliant".
 
-Opzioni: `--sintetico` per una versione breve alla direzione (copertina, sintesi, quadro, piano), `--lang en` per titoli ed etichette in inglese (il contenuto resta nella lingua dei file), `--previous <findings.json>` per aggiungere il confronto con un audit precedente e `--nis2` per una mappatura **indicativa** sulle misure dell'art. 21 della NIS2, che non stabilisce se il soggetto rientra nell'ambito né valuta la conformità. Il tema è teal per la sicurezza e ambra per la privacy.
+Options: `--sintetico` for a short version for management (cover, summary, overview, plan), `--lang en` for English titles and labels (the content stays in the language of the files), `--previous <findings.json>` to add a comparison with a previous audit, and `--nis2` for an **indicative** mapping onto the measures of NIS2 Article 21, which neither decides whether the entity is in scope nor assesses compliance. The theme is teal for security and amber for privacy.
 
-Un esempio anonimizzato, da un caso reale: [`examples/collaudo-statico/report-esempio.pdf`](examples/collaudo-statico/report-esempio.pdf). Metodo: [`references/documentary-audit.md`](references/documentary-audit.md).
+An anonymized example from a real case: [`examples/collaudo-statico/report-esempio.pdf`](examples/collaudo-statico/report-esempio.pdf). Method: [`references/documentary-audit.md`](references/documentary-audit.md).
 
-## Installazione
+## Installation
 
-**Claude.ai**: scarica `gdpr-sentinel.skill` dalle [Release](https://github.com/dextsamu/gdpr-sentinel/releases) e caricalo da *Impostazioni → Capacità → Skill*.
+**Claude.ai**: download `gdpr-sentinel.skill` from the [Releases](https://github.com/dextsamu/gdpr-sentinel/releases) and upload it under *Settings → Capabilities → Skills*.
 
-**Claude Code**, come plugin (si aggiorna da solo alle nuove versioni):
+**Claude Code**, as a plugin (updates itself to new versions):
 ```text
 /plugin marketplace add dextsamu/gdpr-sentinel
 /plugin install gdpr-sentinel@gdpr-sentinel
 ```
-Dallo stesso marketplace si installa anche la skill gemella: `/plugin install appsec-sentinel@gdpr-sentinel`. In alternativa, come cartella di skill:
+The sister skill installs from the same marketplace: `/plugin install appsec-sentinel@gdpr-sentinel`. Alternatively, as a skill folder:
 ```bash
 git clone https://github.com/dextsamu/gdpr-sentinel ~/.claude/skills/gdpr-sentinel
 ```
-oppure, per un solo progetto, in `<progetto>/.claude/skills/gdpr-sentinel/`.
+or, for a single project, in `<project>/.claude/skills/gdpr-sentinel/`.
 
-**Altri agenti** (Codex, Antigravity): vedi [`docs/ALTRI-AGENTI.md`](docs/ALTRI-AGENTI.md) per i percorsi di installazione e per cosa è stato provato.
+**Other agents** (Codex, Antigravity): see [`docs/ALTRI-AGENTI.md`](docs/ALTRI-AGENTI.md) (in Italian) for the install paths and what was tested.
 
-## Struttura
+## Structure
 
 ```
-SKILL.md                      metodo, stati, controlli A–N in sintesi
+SKILL.md                      method, states, controls A–N in brief
 references/
-  controls.md                 checklist dettagliata con gli errori da evitare
-  sources.md                  fonti ufficiali e data di verifica
-  automation.md               flusso e limiti degli script automatici
+  controls.md                 detailed checklist with the mistakes to avoid
+  sources.md                  official sources and date checked
+  automation.md               flow and limits of the automated scripts
 assets/
   processing-map.csv  gdpr-matrix.csv  questions-template.md
 scripts/
-  check_matrix.py             controlla la matrice (solo libreria standard di Python)
+  check_matrix.py             checks the matrix (Python standard library only)
   cookie_scan.py  draft_ropa.py  draft_dpia.py  retention_check.py  redact_check.py
+  entity_matrix.py  notice_matrix.py  access_matrix.py
   compare_audits.py  build_report_pdf.py  init_gdpr.py
-tests/                        app di prova con difetti noti e run_checks.py
+tests/                        test apps with known flaws and run_checks.py
 ```
 
-## Con `appsec-sentinel`
+The skill's own instructions, references and templates are written in Italian (the authors work with Italian public administrations and non-profits); the agent applies them and answers in your language. Machine-readable files keep canonical Italian field names and enum values because the scripts check them.
 
-<img src="docs/img/suite.svg" alt="appsec-sentinel e gdpr-sentinel: due skill, una cartella di audit, un solo report PDF" width="100%">
+## With `appsec-sentinel`
 
-`gdpr-sentinel` guarda la **privacy**; la sua gemella [`appsec-sentinel`](https://github.com/dextsamu/appsec-sentinel) guarda la **sicurezza** (codice, API, infrastruttura, dipendenze). Funzionano anche da sole, ma insieme si completano:
+<img src="docs/img/suite.svg" alt="appsec-sentinel and gdpr-sentinel: two skills, one audit folder, one PDF report" width="100%">
 
-- **Dalla privacy alla sicurezza**: il controllo H (artt. 25 e 32) si appoggia ai finding di `appsec-sentinel`; `/gdpr-sentinel sicurezza <repo>` passa il lavoro alla gemella.
-- **Dalla sicurezza alla privacy**: se hai già un audit di sicurezza, `gdpr-sentinel` usa la stessa cartella e collega i finding che incidono sui dati personali, senza rifarli.
-- **Un solo report**: se le due skill scrivono nella stessa cartella, `scripts/build_report_pdf.py` produce un unico PDF con finding, audit documentale, matrice privacy e domande.
+`gdpr-sentinel` looks at **privacy**; its sister skill [`appsec-sentinel`](https://github.com/dextsamu/appsec-sentinel) looks at **security** (code, APIs, infrastructure, dependencies). They work on their own, but together they complement each other:
 
-## Cosa NON fa
+- **From privacy to security**: control H (Arts. 25 and 32) relies on `appsec-sentinel` findings; `/gdpr-sentinel security <repo>` hands the work to the sister skill.
+- **From security to privacy**: if you already have a security audit, `gdpr-sentinel` uses the same folder and links the findings that affect personal data, without redoing them.
+- **One report**: if both skills write to the same folder, `scripts/build_report_pdf.py` produces a single PDF with findings, documentary audit, privacy matrix and questions.
 
-- Non è un parere legale e non sostituisce DPO, avvocato o organismo di certificazione.
-- Non produce DPIA, registro dei trattamenti o gestione dei diritti: valuta se il sistema reale li rende possibili e coerenti.
-- Non decide basi giuridiche, notifiche di violazione o trasferimenti al posto del titolare.
-- Non cita da memoria termini, decisioni di adeguatezza o adesioni al DPF: vanno verificati sulle fonti ufficiali al momento dell'uso.
-- Non porta dati personali reali nei report: usa identificatori sintetici e redazione.
+## What it does not do
 
-## Domande frequenti
+- It is not legal advice and does not replace a DPO, a lawyer or a certification body.
+- It does not produce a DPIA, a record of processing or rights handling: it assesses whether the real system makes them possible and consistent.
+- It does not decide legal bases, breach notifications or transfers on the controller's behalf.
+- It does not quote deadlines, adequacy decisions or Data Privacy Framework certifications from memory: they must be checked against official sources at the time of use.
+- It does not put real personal data in reports: it uses synthetic identifiers and redaction.
+
+## FAQ
 
 <details>
-<summary><b>La bozza del registro dei trattamenti è il registro dell'art. 30?</b></summary>
+<summary><b>Is the draft record of processing the Art. 30 record?</b></summary>
 
-No: è una bozza ricavata dal codice, tutta in «ipotesi da validare». Il codice mostra cosa il software può trattare e a chi può inviare dati, non chi è titolare o responsabile, né basi giuridiche, paesi e tempi di conservazione. Quelle colonne le conferma il titolare.
+No: it is a draft derived from the code, all "hypothesis to validate". The code shows what the software can process and where it can send data, not who is controller or processor, nor legal bases, countries or retention periods. Those columns are confirmed by the controller.
 </details>
 
 <details>
-<summary><b>Posso scansionare i cookie del sito di un cliente?</b></summary>
+<summary><b>Can I scan the cookies of a client's website?</b></summary>
 
-Solo con la conferma scritta del titolare: `cookie_scan.py` rifiuta gli URL non locali senza `--autorizzato`. Non clicca il banner, non accede, non salva i valori dei cookie. La classificazione dei domini è indicativa, non un parere sulla necessità del consenso.
+Only with the controller's written confirmation: `cookie_scan.py` refuses non-local URLs without `--autorizzato`. It does not click the banner, does not log in, does not save cookie values. The domain classification is indicative, not an opinion on whether consent is required.
 </details>
 
 <details>
-<summary><b>Mi dice se sono conforme?</b></summary>
+<summary><b>Will it tell me whether I'm compliant?</b></summary>
 
-No, per scelta. Ti dice cosa risulta dal sistema, cosa non si può verificare e quali decisioni spettano al titolare.
+No, by design. It tells you what the system shows, what cannot be verified and which decisions belong to the controller.
 </details>
 
 <details>
-<summary><b>Serve l'accesso al sistema in produzione?</b></summary>
+<summary><b>Does it need access to the production system?</b></summary>
 
-No. Il lavoro parte da codice, configurazione e documenti. I test attivi (browser pulito, richieste di diritti) si fanno solo su ambienti autorizzati, con account sintetici e nessun messaggio reale.
+No. The work starts from code, configuration and documents. Active tests (clean browser, rights requests) are done only on authorized environments, with synthetic accounts and no real messages.
 </details>
 
 <details>
-<summary><b>Vale per la pubblica amministrazione?</b></summary>
+<summary><b>Is it suitable for public administrations?</b></summary>
 
-Sì: è pensata anche per PA, associazioni e piccole organizzazioni. Il controllo N considera i casi italiani e settoriali, compresi ACN e NIS2.
+Yes: it is designed for public bodies, associations and small organizations too. Control N covers Italian and sector-specific cases, including ACN and NIS2.
 </details>
 
 <details>
-<summary><b>Chi risponde alle domande che genera?</b></summary>
+<summary><b>Who answers the questions it generates?</b></summary>
 
-Titolare, DPO, legale o fornitori, a seconda del punto: la skill indica il destinatario di ciascuna.
+The controller, the DPO, the lawyer or the suppliers, depending on the point: the skill names the recipient of each one.
 </details>
 
-## Stato del progetto
+## Project status
 
-Cosa viene dopo, in ordine e con il numero che ogni voce deve migliorare: [ROADMAP.md](ROADMAP.md).
+What comes next, in order and with the number each item must improve: [ROADMAP.md](ROADMAP.md) (in Italian).
 
-Versione 1.5.0. Cosa è già verificato e cosa no, in modo esplicito:
+Version 1.5.0. What has been verified and what has not, explicitly:
 
-- Gli script e i template sono verificati automaticamente a ogni modifica (GitHub Actions); `tests/run_checks.py` prova gli script contro un'app finta con difetti noti. Per ora la CI su GitHub dipende dal limite di spesa dell'account, quindi il collaudo è stato eseguito in locale.
-- **Primo collaudo su un caso reale** (30/10/2026): applicazione web di proprietà dell'autore, sola analisi statica e documentale. Ha fatto emergere uno scostamento fra informativa e codice e ha fatto correggere le istruzioni (vedi CHANGELOG). Resta da collaudare: `cookie_scan.py` su un sito reale autorizzato (provato solo su una pagina locale), la verifica dei diritti su istanza autorizzata, e la bozza dell'art. 30 su progetti più piccoli: su un'app grande produce molte righe da raggruppare a mano. Dopo (31/10/2026): banco privacy `tests/bench-app` (15/15 difetti noti in due giri) e secondo banco `tests/bench-pa`, sito di una scuola in PHP (15/15 in due giri, 0 falsi allarmi) e quattro giri reali sullo stesso gestionale: due giri concordano sul 63% delle cause (dopo la regola «un gap = una causa»; prima 44–46%), quindi su un'app grande usa `doppio`. Con le tre matrici (per entità, informativa, ruoli e accessi; 1.5.0) due giri danno lo stesso giudizio sul 90–93%, 83–88% e 86–92% delle righe da chiudere; sull'insieme dei gap l'accordo resta 60–69%. Segnala ciò che si rompe o confonde con una issue.
-- **Altri agenti.** Provata una volta su Codex e su Antigravity (Windows, modalità `rapido`, app finta, solo analisi statica): le regole sono state rispettate e le lacune emerse sono state corrette nella 1.1.0. Non è una garanzia di compatibilità: vedi [`docs/ALTRI-AGENTI.md`](docs/ALTRI-AGENTI.md).
-- Le fonti su normativa e linee guida sono state controllate il 29/10/2026. Termini, decisioni di adeguatezza e adesioni al DPF cambiano: vanno riverificati ogni volta che servono.
+- Scripts and templates are checked automatically on every change (GitHub Actions); `tests/run_checks.py` tests the scripts against a fake app with known flaws.
+- **First test on a real case** (30/10/2026): a web application owned by the author, static and documentary analysis only. It surfaced a gap between privacy notice and code and led to fixes in the instructions (see CHANGELOG). Still to be tested: `cookie_scan.py` on a real authorized website (only tested on a local page), rights checks on an authorized instance, and the Art. 30 draft on smaller projects: on a large app it produces many rows to group by hand. After that (31/10/2026): the privacy bench `tests/bench-app` (15/15 known defects in two runs), a second bench `tests/bench-pa`, a school website in PHP (15/15 in two runs, 0 false alarms), and repeated real runs on the same management app. With the three fixed matrices (per entity, privacy notice, roles and access; 1.5.0), two runs give the same answer on 90–93%, 83–88% and 86–92% of the rows to close; on the whole set of gaps agreement stays at 60–69%, so on a large app use `double`. Please report anything that breaks or confuses you with an issue.
+- **Other agents.** Tested on Codex and Antigravity (Windows, static analysis only): the rules were followed and the gaps that came up were fixed. This is not a compatibility guarantee: see [`docs/ALTRI-AGENTI.md`](docs/ALTRI-AGENTI.md).
+- Sources on law and guidelines were checked on 29/10/2026. Deadlines, adequacy decisions and DPF certifications change: check them again every time you need them.
 
-## In English
-
-`gdpr-sentinel` is an agent skill (in Italian), built for Claude and also tried once on Codex and Antigravity, for technical GDPR/ePrivacy assessments based on what a system actually does. It maps processing activities, fills an A–N control matrix with four allowed states (never "compliant"), and writes ready-to-send questions for the controller, DPO, legal counsel and vendors. It is not legal advice. Helper scripts (pre-consent cookie scan, draft record of processing and supplier list from code, retention evidence, redaction check) and a business PDF report are included. Licensed under Apache-2.0. The skill text is Italian; an English version is not available yet.
-
-## Uso responsabile
+## Responsible use
 
 > [!WARNING]
-> Strumento di supporto, fornito «così com'è», **senza garanzie**; non è consulenza legale. Se la valutazione tocca dati personali reali, definisci prima ruoli e riservatezza (per esempio la nomina a responsabile del trattamento, art. 28 GDPR) e usala con l'autorizzazione del titolare. L'utente risponde dell'uso e dei risultati, secondo le sezioni 7 e 8 della licenza.
+> A support tool, provided "as is", **without warranty**; it is not legal advice. If the assessment touches real personal data, first define roles and confidentiality (for example the appointment as processor, GDPR Art. 28) and use it with the controller's authorization. The user is responsible for its use and results, under sections 7 and 8 of the license.
 
-## Licenza e crediti
+## License and credits
 
-Copyright 2026 Samuele Cucurnia e Pietro Previtali, licenza [Apache-2.0](LICENSE) (vedi anche [NOTICE](NOTICE)).
+Copyright 2026 Samuele Cucurnia and Pietro Previtali, licensed under [Apache-2.0](LICENSE) (see also [NOTICE](NOTICE)).
 
-La skill nasce da un prompt di assessment fornito da **Pietro Previtali** ed è stata adattata e strutturata da **Samuele Cucurnia** con il supporto di Claude (Anthropic).
+The skill comes from an assessment prompt provided by **Pietro Previtali** and was adapted and structured by **Samuele Cucurnia** with the support of Claude (Anthropic).
 
-**Nessuna affiliazione**: il progetto non è affiliato né approvato da Garante per la protezione dei dati personali, EDPB, Commissione europea, OWASP, NIST, ACN, AgID, Anthropic o altri enti citati. I marchi appartengono ai rispettivi titolari. Le fonti di terzi sono collegate o riassunte, non riprodotte: vedi [THIRD_PARTY.md](THIRD_PARTY.md).
+**No affiliation**: the project is not affiliated with or endorsed by the Italian Data Protection Authority (Garante), the EDPB, the European Commission, OWASP, NIST, ACN, AgID, Anthropic or the other bodies mentioned. Trademarks belong to their owners. Third-party sources are linked or summarized, not reproduced: see [THIRD_PARTY.md](THIRD_PARTY.md).
 
-## Contribuire e segnalare
+## Contributing and reporting
 
-- Correzioni alle fonti e ai checklist, nuovi template e bug nello script sono benvenuti: [CONTRIBUTING.md](CONTRIBUTING.md).
-- Problemi di sicurezza o istruzioni che potrebbero indurre a conclusioni giuridiche indebite: [SECURITY.md](SECURITY.md).
-- Cronologia delle versioni: [CHANGELOG.md](CHANGELOG.md).
+- Fixes to sources and checklists, new templates and script bugs are welcome: [CONTRIBUTING.md](CONTRIBUTING.md).
+- Security problems, or instructions that could lead to unwarranted legal conclusions: [SECURITY.md](SECURITY.md).
+- Version history: [CHANGELOG.md](CHANGELOG.md) (in Italian).

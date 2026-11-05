@@ -38,4 +38,4 @@ Scrivi il comando dopo `/gdpr-sentinel` (o come prima parola della richiesta). L
 - Il codice mostra cosa il software può trattare, non chi è titolare né la base giuridica.
 - I file di lavoro e i report sono riservati: fuori da Git e dai repository pubblici.
 
-Dettagli: [README](../README.md) · [automazioni](../references/automation.md)
+Dettagli: [README](../README.it.md) · [automazioni](../references/automation.md)
